@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recetario Virtual</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -32,6 +32,58 @@
   <main>
     <section id="listaRecetas"></section>
   </main>
+
+  <!-- Botón flotante para agregar -->
+  <button id="btnAgregar" class="flotante">+</button>
+
+  <!-- Formulario emergente -->
+  <div id="formReceta" class="modal oculto">
+    <div class="formulario">
+      <h2>Agregar nueva receta</h2>
+
+      <label>Guardar en:</label>
+      <select id="categoriaReceta">
+        <option value="comida">Comida</option>
+        <option value="ensalada">Ensaladas</option>
+        <option value="bebidas">Bebidas</option>
+        <option value="reposteria">Repostería</option>
+        <option value="panaderia">Panadería</option>
+        <option value="postres">Postres Fríos</option>
+      </select>
+
+      <label>Imagen de portada:</label>
+      <input type="file" id="imagenPortada" accept="image/*">
+
+      <label>Título:</label>
+      <input type="text" id="tituloReceta" placeholder="Ej: Pollo a la brasa">
+
+      <label>Descripción breve:</label>
+      <textarea id="descripcionBreve" placeholder="Descripción corta..."></textarea>
+
+      <hr>
+
+      <h3>Sección 1: Receta Principal</h3>
+      <label>Ingredientes:</label>
+      <textarea id="ingredientes1" placeholder="Separar por comas..."></textarea>
+
+      <label>Imagen secundaria:</label>
+      <input type="file" id="imagenSecundaria" accept="image/*">
+
+      <label>Procedimiento:</label>
+      <textarea id="procedimiento1" placeholder="Paso a paso..."></textarea>
+
+      <h3>Sección 2: Ensalada (opcional)</h3>
+      <textarea id="ensalada" placeholder="Receta o detalles de la ensalada..."></textarea>
+
+      <h3>Sección 3: Bebida (opcional)</h3>
+      <textarea id="bebida" placeholder="Receta o detalles de la bebida..."></textarea>
+
+      <div class="acciones">
+        <button id="guardarReceta">Guardar</button>
+        <button id="cerrarForm">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
