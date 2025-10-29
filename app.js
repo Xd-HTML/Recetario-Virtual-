@@ -1,133 +1,168 @@
-// ======= VARIABLES GLOBALES =======
-const btnFlotante = document.querySelector('.flotante');
-const modal = document.querySelector('.modal');
-const cerrarForm = document.getElementById('cerrarForm');
-const guardarReceta = document.getElementById('guardarReceta');
-const listaRecetas = document.getElementById('listaRecetas');
-const buscarReceta = document.getElementById('buscarReceta');
-const menuCategorias = document.querySelectorAll('.menu li');
-const detalleReceta = document.getElementById('detalleReceta');
-
-// Arreglo inicial de recetas
-let recetas = [];
-
-// ======= FUNCIONES =======
-
-// Mostrar formulario
-btnFlotante.addEventListener('click', () => modal.classList.remove('oculto'));
-
-// Cerrar formulario
-cerrarForm.addEventListener('click', () => modal.classList.add('oculto'));
-
-// Guardar receta nueva
-guardarReceta.addEventListener('click', () => {
-  const nombre = document.getElementById('nombreReceta').value.trim();
-  const categoria = document.getElementById('categoriaReceta').value;
-  const ingredientes = document.getElementById('ingredientesReceta').value.split('\n').map(i => i.trim()).filter(i => i);
-  const procedimiento = document.getElementById('procedimientoReceta').value.split('\n').map(p => p.trim()).filter(p => p);
-  const imagen = document.getElementById('imagenReceta').files[0] ? URL.createObjectURL(document.getElementById('imagenReceta').files[0]) : '';
-
-  if(!nombre || !categoria) return alert('Nombre y categoría son obligatorios.');
-
-  const receta = { nombre, categoria, ingredientes, procedimiento, imagen };
-  recetas.push(receta);
-  mostrarRecetas(recetas);
-  modal.classList.add('oculto');
-  limpiarFormulario();
-});
-
-// Limpiar formulario
-function limpiarFormulario() {
-  document.getElementById('nombreReceta').value = '';
-  document.getElementById('categoriaReceta').value = '';
-  document.getElementById('ingredientesReceta').value = '';
-  document.getElementById('procedimientoReceta').value = '';
-  document.getElementById('imagenReceta').value = '';
-}
-
-// Mostrar recetas en la lista
-function mostrarRecetas(array) {
-  listaRecetas.innerHTML = '';
-  if(array.length === 0) {
-    listaRecetas.innerHTML = '<p>No se encontraron recetas.</p>';
-    return;
+class Receta {
+  constructor(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida) {
+    this.categoria = categoria;
+    this.portada = portada;
+    this.titulo = titulo;
+    this.descripcion = descripcion;
+    this.ingredientes = ingredientes;
+    this.imgSec = imgSec;
+    this.procedimiento = procedimiento;
+    this.ensalada = ensalada;
+    this.bebida = bebida;
   }
-  array.forEach((receta, index) => {
-    const div = document.createElement('div');
-    div.classList.add('receta');
-    div.innerHTML = `
-      <img src="${receta.imagen || 'https://via.placeholder.com/250x150'}" alt="${receta.nombre}">
-      <div class="info">
-        <h4>${receta.nombre}</h4>
-        <p>${receta.categoria}</p>
+
+  // === Tarjeta visual en la lista principal ===
+  mostrarHTML(index) {
+    return `
+      <div class="receta" data-index="${index}">
+        ${this.portada ? `<img src="${this.portada}" alt="Portada de ${this.titulo}">` : ""}
+        <div class="info">
+          <h4>${this.titulo}</h4>
+          <p>${this.descripcion}</p>
+        </div>
       </div>
     `;
-    div.addEventListener('click', () => verDetalleReceta(index));
-    listaRecetas.appendChild(div);
-  });
+  }
 }
 
-// Ver detalle de receta
-function verDetalleReceta(index) {
-  const r = recetas[index];
-  detalleReceta.innerHTML = `
-    <button class="volver" onclick="cerrarDetalle()">← Volver</button>
-    <div class="detalle-contenido">
-      <img class="detalle-imagen" src="${r.imagen || 'https://via.placeholder.com/250x150'}" alt="${r.nombre}">
-      <div class="detalle-info">
-        <h2>${r.nombre}</h2>
-        <p><strong>Categoría:</strong> ${r.categoria}</p>
-        <div class="tabs">
-          <button class="tab activa" data-tab="ingredientes">Ingredientes</button>
-          <button class="tab" data-tab="procedimiento">Procedimiento</button>
-        </div>
-        <div class="tab-contenido activa" id="ingredientes">
-          <ul id="detalleIngredientes">${r.ingredientes.map(i => `<li>${i}</li>`).join('')}</ul>
-        </div>
-        <div class="tab-contenido" id="procedimiento">
-          <ol id="detalleProcedimiento">${r.procedimiento.map(p => `<li>${p}</li>`).join('')}</ol>
-        </div>
-      </div>
-    </div>
-  `;
-  detalleReceta.style.display = 'block';
+class Recetario {
+  constructor() {
+    this.recetas = [];
+  }
 
-  // Tabs
-  const tabs = detalleReceta.querySelectorAll('.tab');
-  const contenidos = detalleReceta.querySelectorAll('.tab-contenido');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('activa'));
-      tab.classList.add('activa');
-      contenidos.forEach(c => c.classList.remove('activa'));
-      detalleReceta.querySelector(`#${tab.dataset.tab}`).classList.add('activa');
+  agregarReceta(receta) {
+    this.recetas.push(receta);
+  }
+
+  mostrarTodas() {
+    const lista = document.getElementById("listaRecetas");
+    const detalle = document.getElementById("detalleReceta");
+    detalle.classList.add("oculto");
+    lista.classList.remove("oculto");
+
+    lista.innerHTML = this.recetas.map((r, i) => r.mostrarHTML(i)).join("");
+
+    // Activar clic en cada tarjeta
+    document.querySelectorAll(".receta").forEach(card => {
+      card.addEventListener("click", () => {
+        const index = card.getAttribute("data-index");
+        this.mostrarDetalle(index);
+      });
     });
-  });
-}
+  }
 
-// Cerrar detalle
-function cerrarDetalle() {
-  detalleReceta.style.display = 'none';
-}
+  mostrarDetalle(index) {
+    const receta = this.recetas[index];
+    const lista = document.getElementById("listaRecetas");
+    const detalle = document.getElementById("detalleReceta");
 
-// Filtrado por búsqueda
-buscarReceta.addEventListener('input', () => {
-  const texto = buscarReceta.value.toLowerCase();
-  const filtradas = recetas.filter(r => r.nombre.toLowerCase().includes(texto));
-  mostrarRecetas(filtradas);
-});
+    lista.classList.add("oculto");
+    detalle.classList.remove("oculto");
 
-// Filtrado por categoría
-menuCategorias.forEach(li => {
-  li.addEventListener('click', () => {
-    const cat = li.dataset.categoria;
-    if(cat === 'todas') {
-      mostrarRecetas(recetas);
+    // Mostrar información general
+    document.getElementById("detalleImagen").src = receta.portada || "";
+    document.getElementById("detalleTitulo").textContent = receta.titulo;
+    document.getElementById("detalleDescripcion").textContent = receta.descripcion;
+
+    // Ingredientes
+    const ul = document.getElementById("detalleIngredientes");
+    ul.innerHTML = receta.ingredientes.map(i => `<li>• ${i.trim()}</li>`).join("");
+
+    // Imagen secundaria
+    const imgSec = document.getElementById("detalleImgSecundaria");
+    if (receta.imgSec) {
+      imgSec.src = receta.imgSec;
+      imgSec.style.display = "block";
     } else {
-      mostrarRecetas(recetas.filter(r => r.categoria === cat));
+      imgSec.style.display = "none";
     }
-  });
+
+    // Procedimiento (dividido por pasos)
+    const procDiv = document.getElementById("detalleProcedimiento");
+    const pasos = receta.procedimiento.split("\n").filter(p => p.trim() !== "");
+    procDiv.innerHTML = pasos.map((p, i) => `<p><strong>Paso ${i + 1}:</strong> ${p}</p>`).join("");
+
+    // Ensalada y bebida
+    document.getElementById("detalleEnsalada").textContent = receta.ensalada || "No se agregó receta de ensalada.";
+    document.getElementById("detalleBebida").textContent = receta.bebida || "No se agregó receta de bebida.";
+
+    // Tabs
+    const tabs = document.querySelectorAll(".tab");
+    const contenidos = document.querySelectorAll(".tab-contenido");
+
+    tabs.forEach(tab => {
+      tab.classList.remove("activa");
+      if (tab.dataset.tab === "principal") tab.classList.add("activa");
+    });
+
+    contenidos.forEach(c => {
+      c.classList.remove("activa");
+      if (c.id === "tab-principal") c.classList.add("activa");
+    });
+
+    tabs.forEach(tab => {
+      tab.onclick = () => {
+        tabs.forEach(t => t.classList.remove("activa"));
+        contenidos.forEach(c => c.classList.remove("activa"));
+        tab.classList.add("activa");
+        const target = tab.dataset.tab;
+        document.getElementById(`tab-${target}`).classList.add("activa");
+      };
+    });
+
+    // Botón volver
+    document.getElementById("btnVolver").onclick = () => {
+      this.mostrarTodas();
+    };
+  }
+}
+
+// === Inicialización del recetario ===
+const app = new Recetario();
+
+// Nombre aleatorio para el título
+const nombres = ["Cocina Mágica", "Mi Sazón", "Sabores Caseros", "Delicias del Hogar"];
+document.getElementById("nombreWeb").textContent = nombres[Math.floor(Math.random() * nombres.length)];
+
+// === DOM principal ===
+const btnAgregar = document.getElementById("btnAgregar");
+const formReceta = document.getElementById("formReceta");
+const cerrarForm = document.getElementById("cerrarForm");
+const guardarReceta = document.getElementById("guardarReceta");
+
+// Mostrar formulario
+btnAgregar.addEventListener("click", () => formReceta.classList.remove("oculto"));
+cerrarForm.addEventListener("click", () => formReceta.classList.add("oculto"));
+
+// === Guardar una nueva receta ===
+guardarReceta.addEventListener("click", () => {
+  const categoria = document.getElementById("categoriaReceta").value;
+  const titulo = document.getElementById("tituloReceta").value.trim();
+  const descripcion = document.getElementById("descripcionBreve").value.trim();
+  const ingredientes = document.getElementById("ingredientes1").value.split(",");
+  const procedimiento = document.getElementById("procedimiento1").value.trim();
+  const ensalada = document.getElementById("ensalada").value.trim();
+  const bebida = document.getElementById("bebida").value.trim();
+
+  // Imágenes
+  const portadaFile = document.getElementById("imagenPortada").files[0];
+  const imgSecFile = document.getElementById("imagenSecundaria").files[0];
+
+  const portada = portadaFile ? URL.createObjectURL(portadaFile) : null;
+  const imgSec = imgSecFile ? URL.createObjectURL(imgSecFile) : null;
+
+  // Crear y agregar receta
+  const nueva = new Receta(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida);
+  app.agregarReceta(nueva);
+  app.mostrarTodas();
+
+  // Limpiar formulario
+  formReceta.classList.add("oculto");
+  formReceta.querySelectorAll("input[type='text'], textarea").forEach(el => el.value = "");
+  document.getElementById("categoriaReceta").selectedIndex = 0;
+  document.getElementById("imagenPortada").value = "";
+  document.getElementById("imagenSecundaria").value = "";
 });
 
-// Inicial
-mostrarRecetas(recetas);
+// Mostrar lista inicial vacía
+app.mostrarTodas();
