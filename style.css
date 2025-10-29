@@ -286,6 +286,8 @@ body {
   max-width: 900px;
   margin: auto;
   background: #fffefc;
+  border-radius: 15px;
+  transition: all 0.3s ease;
 }
 
 .volver {
@@ -297,6 +299,7 @@ body {
   cursor: pointer;
   margin-bottom: 20px;
   font-weight: 600;
+  transition: 0.3s;
 }
 
 .volver:hover {
@@ -314,6 +317,7 @@ body {
   width: 250px;
   border-radius: 15px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  transition: 0.3s;
 }
 
 .detalle-info {
@@ -366,15 +370,26 @@ body {
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
 }
 
 .tab-contenido.activa {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 #detalleIngredientes {
   list-style: none;
   padding-left: 10px;
+}
+
+#detalleIngredientes li::before {
+  content: "• ";
+  color: #ffb347;
+  font-weight: bold;
 }
 
 #detalleIngredientes li {
@@ -392,14 +407,26 @@ body {
 #detalleProcedimiento {
   margin-top: 10px;
   line-height: 1.6;
-  list-style: decimal;
-  padding-left: 25px;
+  counter-reset: paso;
 }
 
 #detalleProcedimiento li {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 25px;
+  list-style: none;
+}
+
+#detalleProcedimiento li::before {
+  counter-increment: paso;
+  content: counter(paso) ".";
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+  color: #ffb347;
 }
 
 #tab-ensalada, #tab-bebida {
   background: #f8fff6;
+  transition: all 0.3s ease;
 }
