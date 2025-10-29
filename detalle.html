@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Receta</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="detalleReceta"></div>
+  <script>
+    const detalleReceta = document.getElementById('detalleReceta');
+    const receta = JSON.parse(localStorage.getItem('recetaDetalle'));
+
+    if(receta) {
+      detalleReceta.innerHTML = `
+        <button class="volver" onclick="window.close()">← Cerrar</button>
+        <div class="detalle-contenido">
+          <img class="detalle-imagen" src="${receta.imagen || 'https://via.placeholder.com/250x150'}" alt="${receta.nombre}">
+          <div class="detalle-info">
+            <h2>${receta.nombre}</h2>
+            <p><strong>Categoría:</strong> ${receta.categoria}</p>
+            <div class="tabs">
+              <button class="tab activa" data-tab="ingredientes">Ingredientes</button>
+              <button class="tab" data-tab="procedimiento">Procedimiento</button>
+            </div>
+            <div class="tab-contenido activa" id="ingredientes">
+              <ul id="detalleIngredientes">${receta.ingredientes.map(i => `<li>${i}</li>`).join('')}</ul>
+            </div>
+            <div class="tab-contenido" id="procedimiento">
+              <ol id="detalleProcedimiento">${receta.procedimiento.map(p => `<li>${p}</li>`).join('')}</ol>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Tabs funcionales
+      const tabs = detalleReceta.querySelectorAll('.tab');
+      const contenidos = detalleReceta.querySelectorAll('.tab-contenido');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('activa'));
+          tab.classList.add('activa');
+          contenidos.forEach(c => c.classList.remove('activa'));
+          detalleReceta.querySelector(`#${tab.dataset.tab}`).classList.add('activa');
+        });
+      });
+    } else {
+      detalleReceta.innerHTML = '<p>No se encontró la receta.</p>';
+    }
+  </script>
+</body>
+</html>
