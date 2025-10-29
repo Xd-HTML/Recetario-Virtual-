@@ -25,4 +25,381 @@ body {
   background: #fff;
   padding: 10px 15px;
   flex-wrap: wrap;
-  bo
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  margin: 8px;
+}
+
+.menu ul {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #444;
+  transition: all 0.3s;
+}
+
+.menu li:hover {
+  background: #ffb347;
+  color: white;
+}
+
+.busqueda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#buscarReceta {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+#buscarReceta:focus {
+  border-color: #ffb347;
+}
+
+#btnPerfil {
+  border: none;
+  background: #ffcc70;
+  border-radius: 50%;
+  padding: 6px 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#btnPerfil:hover {
+  background: #ffb347;
+}
+
+/* === LISTA DE RECETAS === */
+#listaRecetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.receta {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.receta:hover {
+  transform: translateY(-3px);
+}
+
+.receta img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.receta .info {
+  margin-top: 10px;
+}
+
+.receta .info h4 {
+  margin: 5px 0;
+  color: #222;
+}
+
+.receta .info p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* === BOTÓN FLOTANTE === */
+.flotante {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4caf50;
+  color: white;
+  font-size: 35px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+
+.flotante:hover {
+  background: #43a047;
+  transform: scale(1.1);
+}
+
+/* === FORMULARIO MODAL === */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.oculto {
+  display: none;
+}
+
+.formulario {
+  background: #fffefc;
+  padding: 25px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.formulario h2 {
+  text-align: center;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.formulario h3 {
+  background: #ffcc70;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+.formulario label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #555;
+}
+
+.formulario input[type="text"],
+.formulario textarea,
+.formulario select {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-family: inherit;
+  transition: 0.2s;
+}
+
+.formulario input[type="text"]:focus,
+.formulario textarea:focus,
+.formulario select:focus {
+  border-color: #ffb347;
+  box-shadow: 0 0 5px rgba(255,179,71,0.4);
+}
+
+.formulario textarea {
+  resize: none;
+  height: 70px;
+}
+
+.formulario input[type="file"] {
+  margin-top: 5px;
+  background: #fff8f0;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.formulario hr {
+  border: none;
+  height: 2px;
+  background: #ffcc70;
+  margin: 20px 0;
+}
+
+/* === BOTONES DEL FORMULARIO === */
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#guardarReceta {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+#guardarReceta:hover {
+  background: #43a047;
+}
+
+#cerrarForm {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+#cerrarForm:hover {
+  background: #e53935;
+}
+
+/* === VISTA DETALLADA DE RECETA === */
+#detalleReceta {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+  background: #fffefc;
+}
+
+.volver {
+  background: #ffb347;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.volver:hover {
+  background: #ffa726;
+}
+
+.detalle-contenido {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.detalle-imagen {
+  width: 250px;
+  border-radius: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.detalle-info {
+  flex: 1;
+}
+
+.detalle-info h2 {
+  margin: 0;
+  font-size: 26px;
+  color: #333;
+}
+
+.detalle-info p {
+  margin-top: 8px;
+  color: #666;
+}
+
+/* === TABS === */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.tab {
+  background: #eee;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tab:hover {
+  background: #ffcc70;
+}
+
+.tab.activa {
+  background: #ffb347;
+  color: white;
+}
+
+/* === CONTENIDO DE CADA SECCIÓN === */
+.tab-contenido {
+  display: none;
+  margin-top: 20px;
+  background: #fffaf1;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.tab-contenido.activa {
+  display: block;
+}
+
+#detalleIngredientes {
+  list-style: none;
+  padding-left: 10px;
+}
+
+#detalleIngredientes li {
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+
+.detalle-secundaria {
+  width: 200px;
+  float: right;
+  margin: 10px 0 10px 15px;
+  border-radius: 10px;
+}
+
+#detalleProcedimiento {
+  margin-top: 10px;
+  line-height: 1.6;
+  list-style: decimal;
+  padding-left: 25px;
+}
+
+#detalleProcedimiento li {
+  margin-bottom: 6px;
+}
+
+#tab-ensalada, #tab-bebida {
+  background: #f8fff6;
+}
