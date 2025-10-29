@@ -11,7 +11,7 @@ class Receta {
     this.bebida = bebida;
   }
 
-  // === Tarjeta visual en la lista principal ===
+  // Tarjeta visual del listado
   mostrarHTML(index) {
     return `
       <div class="receta" data-index="${index}">
@@ -37,6 +37,7 @@ class Recetario {
   mostrarTodas() {
     const lista = document.getElementById("listaRecetas");
     const detalle = document.getElementById("detalleReceta");
+
     detalle.classList.add("oculto");
     lista.classList.remove("oculto");
 
@@ -59,7 +60,7 @@ class Recetario {
     lista.classList.add("oculto");
     detalle.classList.remove("oculto");
 
-    // Mostrar información general
+    // Rellenar información
     document.getElementById("detalleImagen").src = receta.portada || "";
     document.getElementById("detalleTitulo").textContent = receta.titulo;
     document.getElementById("detalleDescripcion").textContent = receta.descripcion;
@@ -77,54 +78,42 @@ class Recetario {
       imgSec.style.display = "none";
     }
 
-    // Procedimiento (dividido por pasos)
-    const procDiv = document.getElementById("detalleProcedimiento");
-    const pasos = receta.procedimiento.split("\n").filter(p => p.trim() !== "");
-    procDiv.innerHTML = pasos.map((p, i) => `<p><strong>Paso ${i + 1}:</strong> ${p}</p>`).join("");
+    // Procedimiento con pasos
+    const pasos = receta.procedimiento.split(",").map(p => p.trim());
+    const proc = document.getElementById("detalleProcedimiento");
+    proc.innerHTML = pasos.map(p => `<li>${p}</li>`).join("");
 
     // Ensalada y bebida
-    document.getElementById("detalleEnsalada").textContent = receta.ensalada || "No se agregó receta de ensalada.";
-    document.getElementById("detalleBebida").textContent = receta.bebida || "No se agregó receta de bebida.";
+    document.getElementById("detalleEnsalada").textContent = receta.ensalada || "Sin acompañamiento.";
+    document.getElementById("detalleBebida").textContent = receta.bebida || "Sin bebida recomendada.";
+
+    // Volver
+    document.getElementById("btnVolver").addEventListener("click", () => this.mostrarTodas());
 
     // Tabs
     const tabs = document.querySelectorAll(".tab");
     const contenidos = document.querySelectorAll(".tab-contenido");
 
     tabs.forEach(tab => {
-      tab.classList.remove("activa");
-      if (tab.dataset.tab === "principal") tab.classList.add("activa");
-    });
-
-    contenidos.forEach(c => {
-      c.classList.remove("activa");
-      if (c.id === "tab-principal") c.classList.add("activa");
-    });
-
-    tabs.forEach(tab => {
-      tab.onclick = () => {
+      tab.addEventListener("click", () => {
         tabs.forEach(t => t.classList.remove("activa"));
         contenidos.forEach(c => c.classList.remove("activa"));
-        tab.classList.add("activa");
-        const target = tab.dataset.tab;
-        document.getElementById(`tab-${target}`).classList.add("activa");
-      };
-    });
 
-    // Botón volver
-    document.getElementById("btnVolver").onclick = () => {
-      this.mostrarTodas();
-    };
+        tab.classList.add("activa");
+        const target = tab.getAttribute("data-tab");
+        document.getElementById(`tab-${target}`).classList.add("activa");
+      });
+    });
   }
 }
 
-// === Inicialización del recetario ===
 const app = new Recetario();
 
-// Nombre aleatorio para el título
+// Nombre aleatorio para la cabecera
 const nombres = ["Cocina Mágica", "Mi Sazón", "Sabores Caseros", "Delicias del Hogar"];
 document.getElementById("nombreWeb").textContent = nombres[Math.floor(Math.random() * nombres.length)];
 
-// === DOM principal ===
+// Referencias al DOM
 const btnAgregar = document.getElementById("btnAgregar");
 const formReceta = document.getElementById("formReceta");
 const cerrarForm = document.getElementById("cerrarForm");
@@ -134,7 +123,7 @@ const guardarReceta = document.getElementById("guardarReceta");
 btnAgregar.addEventListener("click", () => formReceta.classList.remove("oculto"));
 cerrarForm.addEventListener("click", () => formReceta.classList.add("oculto"));
 
-// === Guardar una nueva receta ===
+// Guardar nueva receta
 guardarReceta.addEventListener("click", () => {
   const categoria = document.getElementById("categoriaReceta").value;
   const titulo = document.getElementById("tituloReceta").value.trim();
@@ -151,18 +140,23 @@ guardarReceta.addEventListener("click", () => {
   const portada = portadaFile ? URL.createObjectURL(portadaFile) : null;
   const imgSec = imgSecFile ? URL.createObjectURL(imgSecFile) : null;
 
+  if (!titulo) {
+    alert("Por favor, agrega un título a la receta.");
+    return;
+  }
+
   // Crear y agregar receta
   const nueva = new Receta(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida);
   app.agregarReceta(nueva);
   app.mostrarTodas();
 
-  // Limpiar formulario
+  // Cerrar formulario y limpiar campos
   formReceta.classList.add("oculto");
   formReceta.querySelectorAll("input[type='text'], textarea").forEach(el => el.value = "");
-  document.getElementById("categoriaReceta").selectedIndex = 0;
   document.getElementById("imagenPortada").value = "";
   document.getElementById("imagenSecundaria").value = "";
+  document.getElementById("categoriaReceta").selectedIndex = 0;
 });
 
-// Mostrar lista inicial vacía
+// Mostrar recetas guardadas al inicio
 app.mostrarTodas();
