@@ -1,51 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Detalle Receta</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Receta</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<button id="btnVolver">← Volver</button>
-<div id="detalleReceta">
-  <img id="detalleImagen" src="" alt="" class="detalle-imagen">
-  <h2 id="detalleTitulo"></h2>
-  <p id="detalleDescripcion"></p>
+  <header class="detalle-header">
+    <button id="btnVolver" class="volver">⬅ Volver</button>
+    <h1>Detalle de la Receta</h1>
+  </header>
 
-  <h3>Ingredientes</h3>
-  <ul id="detalleIngredientes"></ul>
+  <main id="detalleReceta" class="detalle-container">
+    <div class="detalle-contenido">
+      <img id="detalleImagen" src="" alt="Imagen principal de la receta" class="detalle-imagen">
+      <div class="detalle-info">
+        <h2 id="detalleTitulo"></h2>
+        <p id="detalleDescripcion"></p>
+      </div>
+    </div>
 
-  <img id="detalleImgSecundaria" class="detalle-secundaria" src="" alt="">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab activa" data-tab="principal">Receta principal</button>
+      <button class="tab" data-tab="ensalada">Ensalada</button>
+      <button class="tab" data-tab="bebida">Bebida</button>
+    </div>
 
-  <h3>Procedimiento</h3>
-  <ol id="detalleProcedimiento"></ol>
+    <!-- Contenido: principal -->
+    <section class="tab-contenido activa" id="tab-principal">
+      <h3>Ingredientes</h3>
+      <ul id="detalleIngredientes"></ul>
 
-  <h3>Ensalada</h3>
-  <p id="detalleEnsalada"></p>
+      <img id="detalleImgSecundaria" class="detalle-secundaria" src="" alt="Imagen secundaria de la receta">
 
-  <h3>Bebida</h3>
-  <p id="detalleBebida"></p>
-</div>
+      <h3>Procedimiento</h3>
+      <ol id="detalleProcedimiento"></ol>
+    </section>
 
-<script>
-const receta = JSON.parse(localStorage.getItem("recetaDetalle"));
-if(receta) {
-  document.getElementById("detalleImagen").src = receta.portada || "";
-  document.getElementById("detalleTitulo").textContent = receta.titulo;
-  document.getElementById("detalleDescripcion").textContent = receta.descripcion;
-  document.getElementById("detalleIngredientes").innerHTML = receta.ingredientes.map(i => `<li>${i}</li>`).join("");
-  document.getElementById("detalleImgSecundaria").src = receta.imgSec || "";
-  document.getElementById("detalleProcedimiento").innerHTML = receta.procedimiento.split(",").map(p => `<li>${p}</li>`).join("");
-  document.getElementById("detalleEnsalada").textContent = receta.ensalada || "Sin acompañamiento";
-  document.getElementById("detalleBebida").textContent = receta.bebida || "Sin bebida recomendada";
-}
+    <!-- Contenido: ensalada -->
+    <section class="tab-contenido" id="tab-ensalada">
+      <h3>Receta de Ensalada</h3>
+      <p id="detalleEnsalada"></p>
+    </section>
 
-document.getElementById("btnVolver").addEventListener("click", () => {
-  window.history.back();
-});
-</script>
+    <!-- Contenido: bebida -->
+    <section class="tab-contenido" id="tab-bebida">
+      <h3>Receta de Bebida</h3>
+      <p id="detalleBebida"></p>
+    </section>
+  </main>
+
+  <script>
+    // Cargar receta seleccionada desde localStorage
+    const receta = JSON.parse(localStorage.getItem("recetaDetalle"));
+
+    if (receta) {
+      document.getElementById("detalleImagen").src = receta.portada || "";
+      document.getElementById("detalleTitulo").textContent = receta.titulo || "Sin título";
+      document.getElementById("detalleDescripcion").textContent = receta.descripcion || "";
+      document.getElementById("detalleIngredientes").innerHTML = (receta.ingredientes || [])
+        .map(i => `<li>${i}</li>`).join("");
+      document.getElementById("detalleImgSecundaria").src = receta.imgSec || "";
+      document.getElementById("detalleProcedimiento").innerHTML = (receta.procedimiento || "")
+        .split(",").map(p => `<li>${p}</li>`).join("");
+      document.getElementById("detalleEnsalada").textContent = receta.ensalada || "Sin acompañamiento de ensalada";
+      document.getElementById("detalleBebida").textContent = receta.bebida || "Sin bebida recomendada";
+    }
+
+    // Volver a la página anterior
+    document.getElementById("btnVolver").addEventListener("click", () => {
+      window.history.back();
+    });
+
+    // Control de pestañas (tabs)
+    const tabs = document.querySelectorAll(".tab");
+    const contenidos = document.querySelectorAll(".tab-contenido");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        // Quitar activo a todos
+        tabs.forEach(t => t.classList.remove("activa"));
+        contenidos.forEach(c => c.classList.remove("activa"));
+
+        // Activar el seleccionado
+        tab.classList.add("activa");
+        document.getElementById(`tab-${tab.dataset.tab}`).classList.add("activa");
+      });
+    });
+  </script>
 
 </body>
 </html>
