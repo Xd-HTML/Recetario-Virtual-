@@ -1,3 +1,6 @@
+// ============================
+// 📘 Clase Receta
+// ============================
 class Receta {
   constructor(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida) {
     this.categoria = categoria;
@@ -24,38 +27,78 @@ class Receta {
   }
 }
 
+// ============================
+// 📗 Clase Recetario
+// ============================
 class Recetario {
   constructor() {
-    this.recetas = [];
+    this.recetas = JSON.parse(localStorage.getItem("recetas")) || [];
+  }
+
+  guardarEnLocalStorage() {
+    localStorage.setItem("recetas", JSON.stringify(this.recetas));
   }
 
   agregarReceta(receta) {
     this.recetas.push(receta);
+    this.guardarEnLocalStorage();
   }
 
-  mostrarTodas() {
+  mostrarTodas(filtro = "") {
     const lista = document.getElementById("listaRecetas");
     lista.classList.remove("oculto");
-    lista.innerHTML = this.recetas.map((r, i) => r.mostrarHTML(i)).join("");
 
-    // Redirigir a otra página al hacer clic
+    let recetasFiltradas = this.recetas;
+
+    if (filtro && filtro !== "todas") {
+      recetasFiltradas = recetasFiltradas.filter(r => r.categoria === filtro);
+    }
+
+    lista.innerHTML = recetasFiltradas.map((r, i) => r.mostrarHTML(i)).join("") || `
+      <p style="text-align:center; color:#777;">No hay recetas disponibles en esta categoría.</p>
+    `;
+
+    // Evento al hacer clic en una receta
     document.querySelectorAll(".receta").forEach(card => {
       card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
         localStorage.setItem("recetaDetalle", JSON.stringify(this.recetas[index]));
-        window.location.href = "detalle.html"; // Abrir la página de detalle en la misma pestaña
+        window.location.href = "detalle.html";
+      });
+    });
+  }
+
+  buscarPorTitulo(texto) {
+    const lista = document.getElementById("listaRecetas");
+    const termino = texto.toLowerCase().trim();
+    const resultados = this.recetas.filter(r => r.titulo.toLowerCase().includes(termino));
+
+    lista.innerHTML = resultados.map((r, i) => r.mostrarHTML(i)).join("") || `
+      <p style="text-align:center; color:#777;">No se encontraron recetas con ese título.</p>
+    `;
+
+    document.querySelectorAll(".receta").forEach(card => {
+      card.addEventListener("click", () => {
+        const index = card.getAttribute("data-index");
+        localStorage.setItem("recetaDetalle", JSON.stringify(this.recetas[index]));
+        window.location.href = "detalle.html";
       });
     });
   }
 }
 
+// ============================
+// 📙 Inicialización
+// ============================
 const app = new Recetario();
 
 // Nombre aleatorio para la cabecera
 const nombres = ["Cocina Mágica", "Mi Sazón", "Sabores Caseros", "Delicias del Hogar"];
 document.getElementById("nombreWeb").textContent = nombres[Math.floor(Math.random() * nombres.length)];
 
-// Formulario
+// ============================
+// 📋 Formularios y botones
+// ============================
 const btnAgregar = document.getElementById("btnAgregar");
 const formReceta = document.getElementById("formReceta");
 const cerrarForm = document.getElementById("cerrarForm");
@@ -64,6 +107,9 @@ const guardarReceta = document.getElementById("guardarReceta");
 btnAgregar.addEventListener("click", () => formReceta.classList.remove("oculto"));
 cerrarForm.addEventListener("click", () => formReceta.classList.add("oculto"));
 
+// ============================
+// 🧁 Guardar nueva receta
+// ============================
 guardarReceta.addEventListener("click", () => {
   const categoria = document.getElementById("categoriaReceta").value;
   const titulo = document.getElementById("tituloReceta").value.trim();
@@ -95,5 +141,29 @@ guardarReceta.addEventListener("click", () => {
   document.getElementById("categoriaReceta").selectedIndex = 0;
 });
 
-// Mostrar recetas al inicio
+// ============================
+// 🔎 Búsqueda en vivo
+// ============================
+document.getElementById("buscarReceta").addEventListener("input", e => {
+  const texto = e.target.value;
+  if (texto === "") {
+    app.mostrarTodas();
+  } else {
+    app.buscarPorTitulo(texto);
+  }
+});
+
+// ============================
+// 🍽️ Filtrado por categorías
+// ============================
+document.querySelectorAll(".menu li").forEach(item => {
+  item.addEventListener("click", () => {
+    const categoria = item.getAttribute("data-categoria");
+    app.mostrarTodas(categoria);
+  });
+});
+
+// ============================
+// 🚀 Mostrar recetas al iniciar
+// ============================
 app.mostrarTodas();
