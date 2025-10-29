@@ -23,49 +23,6 @@ class Receta {
       </div>
     `;
   }
-
-  // Vista detallada
-  detalleHTML() {
-    const ingredientesHTML = this.ingredientes.map(i => `<li>${i.trim()}</li>`).join("");
-    return `
-      <section id="detalleReceta">
-        <button class="volver">⬅ Volver</button>
-        <div class="detalle-contenido">
-          ${this.portada ? `<img class="detalle-imagen" src="${this.portada}" alt="${this.titulo}">` : ""}
-          <div class="detalle-info">
-            <h2>${this.titulo}</h2>
-            <p>${this.descripcion}</p>
-          </div>
-        </div>
-
-        <div class="tabs">
-          <button class="tab activa" data-tab="principal">Receta principal</button>
-          ${this.ensalada ? `<button class="tab" data-tab="ensalada">Ensalada</button>` : ""}
-          ${this.bebida ? `<button class="tab" data-tab="bebida">Bebida</button>` : ""}
-        </div>
-
-        <div id="principal" class="tab-contenido activa">
-          <h3>Ingredientes</h3>
-          <ul id="detalleIngredientes">${ingredientesHTML}</ul>
-          ${this.imgSec ? `<img class="detalle-secundaria" src="${this.imgSec}" alt="Imagen secundaria">` : ""}
-          <h3>Procedimiento</h3>
-          <p>${this.procedimiento}</p>
-        </div>
-
-        ${this.ensalada ? `
-          <div id="ensalada" class="tab-contenido">
-            <h3>Receta de Ensalada</h3>
-            <p>${this.ensalada}</p>
-          </div>` : ""}
-
-        ${this.bebida ? `
-          <div id="bebida" class="tab-contenido">
-            <h3>Receta de Bebida</h3>
-            <p>${this.bebida}</p>
-          </div>` : ""}
-      </section>
-    `;
-  }
 }
 
 class Recetario {
@@ -79,11 +36,16 @@ class Recetario {
 
   mostrarTodas() {
     const lista = document.getElementById("listaRecetas");
+    const detalle = document.getElementById("detalleReceta");
+
+    detalle.classList.add("oculto");
+    lista.classList.remove("oculto");
+
     lista.innerHTML = this.recetas.map((r, i) => r.mostrarHTML(i)).join("");
 
     // Activar clic en cada tarjeta
     document.querySelectorAll(".receta").forEach(card => {
-      card.addEventListener("click", e => {
+      card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
         this.mostrarDetalle(index);
       });
@@ -93,10 +55,40 @@ class Recetario {
   mostrarDetalle(index) {
     const receta = this.recetas[index];
     const lista = document.getElementById("listaRecetas");
-    lista.innerHTML = receta.detalleHTML();
+    const detalle = document.getElementById("detalleReceta");
 
-    // Botón volver
-    document.querySelector(".volver").addEventListener("click", () => this.mostrarTodas());
+    lista.classList.add("oculto");
+    detalle.classList.remove("oculto");
+
+    // Rellenar información
+    document.getElementById("detalleImagen").src = receta.portada || "";
+    document.getElementById("detalleTitulo").textContent = receta.titulo;
+    document.getElementById("detalleDescripcion").textContent = receta.descripcion;
+
+    // Ingredientes
+    const ul = document.getElementById("detalleIngredientes");
+    ul.innerHTML = receta.ingredientes.map(i => `<li>• ${i.trim()}</li>`).join("");
+
+    // Imagen secundaria
+    const imgSec = document.getElementById("detalleImgSecundaria");
+    if (receta.imgSec) {
+      imgSec.src = receta.imgSec;
+      imgSec.style.display = "block";
+    } else {
+      imgSec.style.display = "none";
+    }
+
+    // Procedimiento con pasos
+    const pasos = receta.procedimiento.split(",").map(p => p.trim());
+    const proc = document.getElementById("detalleProcedimiento");
+    proc.innerHTML = pasos.map(p => `<li>${p}</li>`).join("");
+
+    // Ensalada y bebida
+    document.getElementById("detalleEnsalada").textContent = receta.ensalada || "Sin acompañamiento.";
+    document.getElementById("detalleBebida").textContent = receta.bebida || "Sin bebida recomendada.";
+
+    // Volver
+    document.getElementById("btnVolver").addEventListener("click", () => this.mostrarTodas());
 
     // Tabs
     const tabs = document.querySelectorAll(".tab");
@@ -109,7 +101,7 @@ class Recetario {
 
         tab.classList.add("activa");
         const target = tab.getAttribute("data-tab");
-        document.getElementById(target).classList.add("activa");
+        document.getElementById(`tab-${target}`).classList.add("activa");
       });
     });
   }
@@ -117,7 +109,7 @@ class Recetario {
 
 const app = new Recetario();
 
-// Nombre aleatorio
+// Nombre aleatorio para la cabecera
 const nombres = ["Cocina Mágica", "Mi Sazón", "Sabores Caseros", "Delicias del Hogar"];
 document.getElementById("nombreWeb").textContent = nombres[Math.floor(Math.random() * nombres.length)];
 
@@ -141,21 +133,30 @@ guardarReceta.addEventListener("click", () => {
   const ensalada = document.getElementById("ensalada").value.trim();
   const bebida = document.getElementById("bebida").value.trim();
 
-  // Archivos de imagen
+  // Imágenes
   const portadaFile = document.getElementById("imagenPortada").files[0];
   const imgSecFile = document.getElementById("imagenSecundaria").files[0];
 
-  // Convertir imágenes a URLs
   const portada = portadaFile ? URL.createObjectURL(portadaFile) : null;
   const imgSec = imgSecFile ? URL.createObjectURL(imgSecFile) : null;
+
+  if (!titulo) {
+    alert("Por favor, agrega un título a la receta.");
+    return;
+  }
 
   // Crear y agregar receta
   const nueva = new Receta(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida);
   app.agregarReceta(nueva);
   app.mostrarTodas();
 
-  // Cerrar formulario
+  // Cerrar formulario y limpiar campos
   formReceta.classList.add("oculto");
-  formReceta.querySelectorAll("input, textarea").forEach(el => el.value = "");
+  formReceta.querySelectorAll("input[type='text'], textarea").forEach(el => el.value = "");
+  document.getElementById("imagenPortada").value = "";
+  document.getElementById("imagenSecundaria").value = "";
   document.getElementById("categoriaReceta").selectedIndex = 0;
 });
+
+// Mostrar recetas guardadas al inicio
+app.mostrarTodas();
