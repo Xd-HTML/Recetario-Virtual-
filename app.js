@@ -43,65 +43,14 @@ class Recetario {
 
     lista.innerHTML = this.recetas.map((r, i) => r.mostrarHTML(i)).join("");
 
-    // Activar clic en cada tarjeta
+    // Activar clic en cada tarjeta para abrir nueva página
     document.querySelectorAll(".receta").forEach(card => {
       card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
-        this.mostrarDetalle(index);
-      });
-    });
-  }
-
-  mostrarDetalle(index) {
-    const receta = this.recetas[index];
-    const lista = document.getElementById("listaRecetas");
-    const detalle = document.getElementById("detalleReceta");
-
-    lista.classList.add("oculto");
-    detalle.classList.remove("oculto");
-
-    // Rellenar información
-    document.getElementById("detalleImagen").src = receta.portada || "";
-    document.getElementById("detalleTitulo").textContent = receta.titulo;
-    document.getElementById("detalleDescripcion").textContent = receta.descripcion;
-
-    // Ingredientes
-    const ul = document.getElementById("detalleIngredientes");
-    ul.innerHTML = receta.ingredientes.map(i => `<li>• ${i.trim()}</li>`).join("");
-
-    // Imagen secundaria
-    const imgSec = document.getElementById("detalleImgSecundaria");
-    if (receta.imgSec) {
-      imgSec.src = receta.imgSec;
-      imgSec.style.display = "block";
-    } else {
-      imgSec.style.display = "none";
-    }
-
-    // Procedimiento con pasos
-    const pasos = receta.procedimiento.split(",").map(p => p.trim());
-    const proc = document.getElementById("detalleProcedimiento");
-    proc.innerHTML = pasos.map(p => `<li>${p}</li>`).join("");
-
-    // Ensalada y bebida
-    document.getElementById("detalleEnsalada").textContent = receta.ensalada || "Sin acompañamiento.";
-    document.getElementById("detalleBebida").textContent = receta.bebida || "Sin bebida recomendada.";
-
-    // Volver
-    document.getElementById("btnVolver").addEventListener("click", () => this.mostrarTodas());
-
-    // Tabs
-    const tabs = document.querySelectorAll(".tab");
-    const contenidos = document.querySelectorAll(".tab-contenido");
-
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("activa"));
-        contenidos.forEach(c => c.classList.remove("activa"));
-
-        tab.classList.add("activa");
-        const target = tab.getAttribute("data-tab");
-        document.getElementById(`tab-${target}`).classList.add("activa");
+        // Guardar la receta seleccionada en localStorage
+        localStorage.setItem("recetaDetalle", JSON.stringify(this.recetas[index]));
+        // Abrir detalle.html en nueva pestaña
+        window.open("detalle.html", "_blank");
       });
     });
   }
