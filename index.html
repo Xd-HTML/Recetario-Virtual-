@@ -1,46 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recetario Virtual</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <div class="top-bar">
-      <h1 id="nombreWeb"></h1>
-    </div>
+<!-- Formulario emergente -->
+<div id="formReceta" class="modal oculto">
+  <div class="formulario colorido">
+    <h2>🍽️ Agregar nueva receta</h2>
 
-    <nav class="menu">
-      <ul>
-        <li data-categoria="comida">Comida</li>
-        <li data-categoria="reposteria">Repostería</li>
-        <li data-categoria="panaderia">Panadería</li>
-        <li data-categoria="ensalada">Ensaladas</li>
-        <li data-categoria="bebidas">Bebidas</li>
-        <li data-categoria="postres">Postres Fríos</li>
-      </ul>
-
-      <div class="busqueda">
-        <input type="text" id="buscarReceta" placeholder="Buscar receta por título...">
-        <button id="btnPerfil">👤</button>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section id="listaRecetas"></section>
-  </main>
-
-  <!-- Botón flotante para agregar -->
-  <button id="btnAgregar" class="flotante">+</button>
-
-  <!-- Formulario emergente -->
-  <div id="formReceta" class="modal oculto">
-    <div class="formulario">
-      <h2>Agregar nueva receta</h2>
-
+    <div class="campo">
       <label>Guardar en:</label>
       <select id="categoriaReceta">
         <option value="comida">Comida</option>
@@ -50,41 +13,48 @@
         <option value="panaderia">Panadería</option>
         <option value="postres">Postres Fríos</option>
       </select>
+    </div>
 
+    <div class="campo">
       <label>Imagen de portada:</label>
       <input type="file" id="imagenPortada" accept="image/*">
+    </div>
 
+    <div class="campo">
       <label>Título:</label>
       <input type="text" id="tituloReceta" placeholder="Ej: Pollo a la brasa">
+    </div>
 
+    <div class="campo">
       <label>Descripción breve:</label>
-      <textarea id="descripcionBreve" placeholder="Descripción corta..."></textarea>
+      <textarea id="descripcionBreve" placeholder="Describe brevemente tu receta..."></textarea>
+    </div>
 
-      <hr>
-
-      <h3>Sección 1: Receta Principal</h3>
+    <div class="seccion">
+      <h3>🧂 Sección 1: Receta Principal</h3>
       <label>Ingredientes:</label>
-      <textarea id="ingredientes1" placeholder="Separar por comas..."></textarea>
+      <textarea id="ingredientes1" placeholder="Ej: pollo, harina, sal..."></textarea>
 
       <label>Imagen secundaria:</label>
       <input type="file" id="imagenSecundaria" accept="image/*">
 
       <label>Procedimiento:</label>
-      <textarea id="procedimiento1" placeholder="Paso a paso..."></textarea>
+      <textarea id="procedimiento1" placeholder="Explica los pasos detalladamente..."></textarea>
+    </div>
 
-      <h3>Sección 2: Ensalada (opcional)</h3>
-      <textarea id="ensalada" placeholder="Receta o detalles de la ensalada..."></textarea>
+    <div class="seccion">
+      <h3>🥗 Sección 2: Ensalada (opcional)</h3>
+      <textarea id="ensalada" placeholder="Describe la ensalada o acompañamiento..."></textarea>
+    </div>
 
-      <h3>Sección 3: Bebida (opcional)</h3>
-      <textarea id="bebida" placeholder="Receta o detalles de la bebida..."></textarea>
+    <div class="seccion">
+      <h3>🥤 Sección 3: Bebida (opcional)</h3>
+      <textarea id="bebida" placeholder="Describe la bebida que acompaña..."></textarea>
+    </div>
 
-      <div class="acciones">
-        <button id="guardarReceta">Guardar</button>
-        <button id="cerrarForm">Cancelar</button>
-      </div>
+    <div class="acciones">
+      <button id="guardarReceta">Guardar</button>
+      <button id="cerrarForm">Cancelar</button>
     </div>
   </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
+</div>
