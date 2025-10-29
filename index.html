@@ -9,7 +9,7 @@
 <body>
   <header>
     <div class="top-bar">
-      <h1 id="nombreWeb">Recetario Virtual</h1>
+      <h1 id="nombreWeb">RECETARIO VIRTUAL</h1>
     </div>
 
     <nav class="menu">
@@ -23,14 +23,51 @@
       </ul>
 
       <div class="busqueda">
-        <input type="text" id="buscarReceta" placeholder="Buscar receta por título...">
+        <input type="text" id="buscarReceta" placeholder="Buscar receta por título..." />
         <button id="btnPerfil">👤</button>
       </div>
     </nav>
   </header>
 
   <main>
+    <!-- Vista de lista (tarjetas de recetas) -->
     <section id="listaRecetas" class="tarjetasRecetas"></section>
+
+    <!-- Vista de receta detallada -->
+    <section id="detalleReceta" class="oculto">
+      <button id="btnVolver" class="volver">⬅ Volver</button>
+      <div class="detalle-contenido">
+        <img id="detalleImagen" class="detalle-imagen" alt="Imagen de receta" />
+        <div class="detalle-info">
+          <h2 id="detalleTitulo"></h2>
+          <p id="detalleDescripcion"></p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab activa" data-tab="principal">Receta principal</button>
+        <button class="tab" data-tab="ensalada">Ensalada</button>
+        <button class="tab" data-tab="bebida">Bebida</button>
+      </div>
+
+      <div class="tab-contenido activa" id="tab-principal">
+        <h3>Ingredientes:</h3>
+        <ul id="detalleIngredientes"></ul>
+        <img id="detalleImgSecundaria" class="detalle-secundaria" alt="Imagen secundaria" />
+        <h3>Procedimiento:</h3>
+        <p id="detalleProcedimiento"></p>
+      </div>
+
+      <div class="tab-contenido" id="tab-ensalada">
+        <h3>Receta de Ensalada:</h3>
+        <p id="detalleEnsalada"></p>
+      </div>
+
+      <div class="tab-contenido" id="tab-bebida">
+        <h3>Receta de Bebida:</h3>
+        <p id="detalleBebida"></p>
+      </div>
+    </section>
   </main>
 
   <!-- Botón flotante para agregar -->
@@ -52,22 +89,22 @@
       </select>
 
       <label>Imagen de portada:</label>
-      <input type="file" id="imagenPortada" accept="image/*">
+      <input type="file" id="imagenPortada" accept="image/*" />
 
       <label>Título:</label>
-      <input type="text" id="tituloReceta" placeholder="Ej: Pollo a la brasa">
+      <input type="text" id="tituloReceta" placeholder="Ej: Pollo a la brasa" />
 
       <label>Descripción breve:</label>
       <textarea id="descripcionBreve" placeholder="Descripción corta..."></textarea>
 
-      <hr>
+      <hr />
 
       <h3>Sección 1: Receta Principal</h3>
       <label>Ingredientes:</label>
       <textarea id="ingredientes1" placeholder="Separar por comas..."></textarea>
 
       <label>Imagen secundaria:</label>
-      <input type="file" id="imagenSecundaria" accept="image/*">
+      <input type="file" id="imagenSecundaria" accept="image/*" />
 
       <label>Procedimiento:</label>
       <textarea id="procedimiento1" placeholder="Paso a paso..."></textarea>
