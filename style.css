@@ -105,21 +105,34 @@ header h1 {
 }
 
 /* ===============================
-   📋 LISTA DE RECETAS (CATÁLOGO)
+   📋 CATÁLOGO DE RECETAS
 ================================= */
 main {
   flex: 1;
   padding: 2rem;
 }
 
+/* Tres columnas fijas en escritorio */
 .tarjetasRecetas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   justify-items: center;
 }
 
-/* Tarjeta de receta */
+/* Animación fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tarjeta */
 .receta-card {
   background: white;
   border-radius: 16px;
@@ -128,14 +141,23 @@ main {
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   width: 308px;
+  animation: fadeIn 0.6s ease forwards;
+  opacity: 0;
 }
+
+/* Animación escalonada al cargar */
+.receta-card:nth-child(1) { animation-delay: 0.1s; }
+.receta-card:nth-child(2) { animation-delay: 0.2s; }
+.receta-card:nth-child(3) { animation-delay: 0.3s; }
+.receta-card:nth-child(4) { animation-delay: 0.4s; }
+.receta-card:nth-child(5) { animation-delay: 0.5s; }
 
 .receta-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
-/* Imagen con tamaño fijo */
+/* Imagen */
 .receta-img img {
   width: 100%;
   height: 170px;
@@ -169,10 +191,12 @@ main {
   font-size: 0.9rem;
   color: #555;
   line-height: 1.4;
+  height: 45px;
+  overflow: hidden;
 }
 
 /* ===============================
-   🧁 MENSAJES VACÍOS
+   🧁 MENSAJE VACÍO
 ================================= */
 .vacio {
   grid-column: 1 / -1;
@@ -317,22 +341,23 @@ hr {
 /* ===============================
    📱 RESPONSIVE
 ================================= */
-@media (max-width: 768px) {
-  .menu {
-    flex-direction: column;
-    gap: 0.8rem;
+@media (max-width: 1024px) {
+  .tarjetasRecetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .tarjetasRecetas {
+    grid-template-columns: 1fr;
   }
 
-  .busqueda input {
-    width: 100%;
+  .receta-card {
+    width: 95%;
   }
 
   .flotante {
     bottom: 20px;
     right: 20px;
-  }
-
-  .receta-card {
-    width: 95%;
   }
 }
