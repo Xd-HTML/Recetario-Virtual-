@@ -143,3 +143,40 @@ ul li, ol li {
     height: 180px;
   }
 }
+
+/* Tabs dentro del formulario */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  border-bottom: 2px solid #f76b1c;
+}
+
+.seccion {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  background: #fff3e0;
+  transition: background 0.3s;
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+}
+
+.seccion:hover {
+  background: #ffd89b;
+}
+
+.seccion.active {
+  background: #f76b1c;
+  color: white;
+}
+
+.contenido-seccion {
+  display: block;
+}
+
+.contenido-seccion.oculto {
+  display: none;
+}
