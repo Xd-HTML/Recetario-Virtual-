@@ -1,256 +1,219 @@
-/* === ESTILOS GENERALES === */
-body {
-  font-family: 'Poppins', Arial, sans-serif;
-  margin: 0;
-  background: #fffaf3;
-  color: #333;
-  transition: 0.3s;
-}
-
-h1, h2, h3, h4 {
-  margin: 0;
-}
-
-/* === ENCABEZADO Y MENÚ === */
-.top-bar {
-  background: linear-gradient(90deg, #ffcc70, #ffb347);
-  color: #333;
-  text-align: center;
-  padding: 12px 0;
-  font-size: 22px;
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  padding: 10px 15px;
-  flex-wrap: wrap;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  border-radius: 10px;
-  margin: 8px;
-}
-
-.menu-lista {
-  display: flex;
-  list-style: none;
-  gap: 15px;
+/* ===============================
+   🌿 ESTILOS PRINCIPALES
+================================= */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-.menu-lista li {
+body {
+  background-color: #fafafa;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===============================
+   🌟 CABECERA
+================================= */
+header {
+  background: linear-gradient(90deg, #f76b1c, #fad961);
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+}
+
+/* ===============================
+   🍔 MENÚ DE CATEGORÍAS
+================================= */
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: white;
+  padding: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.menu ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.menu li {
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 10px;
-  font-weight: 600;
-  color: #444;
+  padding: 0.5rem 1rem;
+  background: #f4f4f4;
+  border-radius: 8px;
   transition: all 0.3s;
+  font-weight: 500;
 }
 
-.menu-lista li:hover {
-  background: #ffb347;
+.menu li:hover,
+.menu li.activo {
+  background: #f76b1c;
   color: white;
 }
 
+/* ===============================
+   🔎 BARRA DE BÚSQUEDA
+================================= */
 .busqueda {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
-#buscarReceta {
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
+.busqueda input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 220px;
+  transition: all 0.3s;
+}
+
+.busqueda input:focus {
+  border-color: #f76b1c;
   outline: none;
-  transition: 0.3s;
 }
 
-#buscarReceta:focus {
-  border-color: #ffb347;
-  box-shadow: 0 0 5px rgba(255,179,71,0.3);
-}
-
-.perfil-btn {
+.busqueda button {
+  background: #f76b1c;
   border: none;
-  background: #ffcc70;
-  border-radius: 50%;
-  padding: 8px 10px;
-  font-size: 18px;
+  color: white;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.perfil-btn:hover {
-  background: #ffb347;
+.busqueda button:hover {
+  background: #e55d10;
 }
 
-/* === TARJETAS DE RECETAS === */
-#listaRecetas {
+/* ===============================
+   📋 LISTA DE RECETAS
+================================= */
+main {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.tarjetasRecetas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
-.receta {
-  background: #ffffff;
+/* Tarjeta de receta */
+.receta-card {
+  background: white;
   border-radius: 16px;
-  padding: 15px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
   cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
 }
 
-.receta:hover {
-  transform: translateY(-4px);
+.receta-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-.receta img {
+.receta-img img {
   width: 100%;
-  border-radius: 14px;
+  height: 180px;
   object-fit: cover;
 }
 
-.receta .info {
-  margin-top: 10px;
+.sin-imagen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  background: #eee;
+  color: #888;
+  font-size: 2rem;
 }
 
-.receta .info h4 {
-  margin: 5px 0;
-  color: #222;
+.receta-info {
+  padding: 1rem;
+  text-align: center;
 }
 
-.receta .info p {
-  font-size: 14px;
+.receta-info h3 {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.receta-info p {
+  font-size: 0.9rem;
   color: #666;
 }
 
-/* === DETALLE DE RECETA === */
-#detalleReceta {
-  padding: 20px;
+/* ===============================
+   🧁 MENSAJES VACÍOS
+================================= */
+.vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #777;
+  font-style: italic;
 }
 
-.volver {
-  background: none;
-  border: none;
-  color: #ff9933;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 15px;
-  transition: 0.3s;
-}
-
-.volver:hover {
-  text-decoration: underline;
-}
-
-.detalle-contenido {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.detalle-imagen {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 15px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-.detalle-info {
-  flex: 1;
-  min-width: 250px;
-}
-
-.detalle-secundaria {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 10px;
-}
-
-/* === TABS DE SECCIONES === */
-.tabs {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.tab {
-  padding: 8px 16px;
-  background: #fff3e0;
-  border: 1px solid #ffcc70;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #333;
-  transition: 0.3s;
-}
-
-.tab:hover {
-  background: #ffb347;
-  color: white;
-}
-
-.tab.activa {
-  background: linear-gradient(90deg, #ffcc70, #ffb347);
-  color: #333;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.tab-contenido {
-  display: none;
-  margin-top: 20px;
-  animation: fadeIn 0.3s ease;
-}
-
-.tab-contenido.activa {
-  display: block;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* === BOTÓN FLOTANTE === */
+/* ===============================
+   ➕ BOTÓN FLOTANTE
+================================= */
 .flotante {
   position: fixed;
   bottom: 25px;
   right: 25px;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffb347, #ffcc70);
+  background: #f76b1c;
   color: white;
-  font-size: 34px;
+  font-size: 2rem;
   border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  transition: 0.3s;
+  transition: all 0.3s;
 }
 
 .flotante:hover {
-  transform: scale(1.1) rotate(10deg);
+  background: #e55d10;
+  transform: rotate(90deg);
 }
 
-/* === FORMULARIO MODAL === */
+/* ===============================
+   🧾 FORMULARIO MODAL
+================================= */
 .modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 100;
+  transition: opacity 0.3s ease;
 }
 
 .oculto {
@@ -258,147 +221,108 @@ h1, h2, h3, h4 {
 }
 
 .formulario {
-  background: #ffffff;
-  padding: 30px 25px;
-  border-radius: 20px;
-  width: 90%;
+  background: white;
+  padding: 2rem;
+  width: 95%;
   max-width: 550px;
-  max-height: 90vh;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-  animation: aparecer 0.35s ease;
-  border: 1px solid #ffe6b3;
-}
-
-@keyframes aparecer {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  max-height: 85vh;
 }
 
 .formulario h2 {
   text-align: center;
-  color: #ff9933;
-  font-weight: 700;
-  margin-bottom: 15px;
-  text-shadow: 0 1px 2px rgba(255,153,51,0.3);
+  color: #f76b1c;
+  margin-bottom: 1rem;
 }
 
-.formulario h3 {
-  background: linear-gradient(90deg, #ffcc70, #ffb347);
-  color: #333;
-  padding: 7px 10px;
-  border-radius: 10px;
-  margin-top: 20px;
-  font-size: 16px;
-  text-align: center;
-}
-
-.formulario label {
+label {
+  font-weight: 500;
   display: block;
-  margin-top: 12px;
-  font-weight: 600;
-  color: #555;
+  margin-top: 1rem;
 }
 
-.formulario input[type="text"],
-.formulario textarea,
-.formulario select {
+input[type="text"],
+textarea,
+select {
   width: 100%;
-  margin-top: 6px;
-  padding: 10px 12px;
-  border-radius: 12px;
+  padding: 0.6rem;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  margin-top: 0.4rem;
+  transition: all 0.3s;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #f76b1c;
   outline: none;
-  background: #fffaf0;
-  transition: 0.3s;
-  font-family: inherit;
 }
 
-.formulario input[type="text"]:focus,
-.formulario textarea:focus,
-.formulario select:focus {
-  border-color: #ffb347;
-  box-shadow: 0 0 6px rgba(255,179,71,0.4);
-  background: #fff;
+textarea {
+  resize: vertical;
+  min-height: 70px;
 }
 
-.formulario textarea {
-  resize: none;
-  height: 80px;
+hr {
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid #eee;
 }
 
-.formulario input[type="file"] {
-  margin-top: 8px;
-  background: #fffaf0;
-  border-radius: 10px;
-  padding: 8px;
-  border: 1px dashed #ffb347;
-  cursor: pointer;
-  color: #555;
-  font-size: 14px;
-}
-
-.formulario input[type="file"]:hover {
-  background: #fff5e6;
-}
-
-/* === SEPARADOR === */
-.formulario hr {
-  border: none;
-  height: 2px;
-  background: linear-gradient(90deg, #ffcc70, #ffb347);
-  margin: 25px 0;
-  border-radius: 10px;
-}
-
-/* === BOTONES DEL FORMULARIO === */
+/* ===============================
+   🎯 BOTONES DEL FORMULARIO
+================================= */
 .acciones {
   display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
-  gap: 10px;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
-#guardarReceta,
-#cerrarForm {
-  flex: 1;
+.acciones button {
+  padding: 0.6rem 1.2rem;
   border: none;
-  padding: 12px;
-  border-radius: 12px;
-  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
-  font-size: 15px;
+  font-weight: 600;
 }
 
 #guardarReceta {
-  background: linear-gradient(90deg, #4caf50, #81c784);
+  background: #f76b1c;
   color: white;
 }
 
 #guardarReceta:hover {
-  background: linear-gradient(90deg, #43a047, #66bb6a);
-  transform: scale(1.05);
+  background: #e55d10;
 }
 
 #cerrarForm {
-  background: linear-gradient(90deg, #f44336, #e57373);
-  color: white;
+  background: #ccc;
 }
 
 #cerrarForm:hover {
-  background: linear-gradient(90deg, #e53935, #ef5350);
-  transform: scale(1.05);
+  background: #bbb;
 }
 
-/* === SCROLLBAR PERSONALIZADO === */
-.formulario::-webkit-scrollbar {
-  width: 8px;
-}
-.formulario::-webkit-scrollbar-thumb {
-  background: #ffcc70;
-  border-radius: 5px;
-}
-.formulario::-webkit-scrollbar-thumb:hover {
-  background: #ffb347;
+/* ===============================
+   📱 RESPONSIVE
+================================= */
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .busqueda input {
+    width: 100%;
+  }
+
+  .flotante {
+    bottom: 20px;
+    right: 20px;
+  }
 }
