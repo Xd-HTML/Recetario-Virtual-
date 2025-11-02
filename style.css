@@ -33,53 +33,98 @@ header h1 {
 }
 
 /* ===============================
-   📚 CONTENEDOR DEL CATÁLOGO
+   🍔 MENÚ DE CATEGORÍAS
+================================= */
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: white;
+  padding: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.menu ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.menu li {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background: #f4f4f4;
+  border-radius: 8px;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.menu li:hover,
+.menu li.activo {
+  background: #f76b1c;
+  color: white;
+}
+
+/* ===============================
+   🔎 BARRA DE BÚSQUEDA
+================================= */
+.busqueda {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.busqueda input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 220px;
+  transition: all 0.3s;
+}
+
+.busqueda input:focus {
+  border-color: #f76b1c;
+  outline: none;
+}
+
+.busqueda button {
+  background: #f76b1c;
+  border: none;
+  color: white;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.busqueda button:hover {
+  background: #e55d10;
+}
+
+/* ===============================
+   📋 CATÁLOGO DE RECETAS
 ================================= */
 main {
   flex: 1;
   padding: 2rem;
-  display: flex;
-  justify-content: center;
 }
 
-.catalogo-contenedor {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 1200px;
-}
-
-/* Cuadrícula de recetas */
-.catalogo-contenedor {
+/* Cuadrícula del catálogo */
+.tarjetasRecetas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   justify-items: center;
 }
 
-/* ===============================
-   🧁 TARJETAS DE RECETAS
-================================= */
-.receta-card {
-  background: #fff8ee;
-  border-radius: 18px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
-  max-width: 280px;
-  border: 2px solid #ffe6bf;
-  opacity: 0;
-  animation: aparecer 0.6s forwards;
-}
-
-@keyframes aparecer {
+/* Animación al aparecer */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(25px);
   }
   to {
     opacity: 1;
@@ -87,15 +132,30 @@ main {
   }
 }
 
+/* Tarjeta */
+.receta-card {
+  background: #fff8ee;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 300px;
+  animation: fadeIn 0.6s ease forwards;
+  opacity: 0;
+  border: 2px solid #ffe6bf;
+  transform-style: preserve-3d;
+}
+
 .receta-card:hover {
-  transform: translateY(-8px) scale(1.03);
+  transform: translateY(-10px) scale(1.03);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* Imagen de la receta */
+/* Imagen superior */
 .receta-img {
   width: 100%;
-  height: 190px;
+  height: 200px;
   overflow: hidden;
   position: relative;
   border-bottom: 3px solid #ffd699;
@@ -112,27 +172,27 @@ main {
   transform: scale(1.08);
 }
 
-/* Si no hay imagen */
 .sin-imagen {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 190px;
+  height: 200px;
   background: #f0f0f0;
   color: #888;
   font-size: 2rem;
 }
 
-/* Información */
+/* Info */
 .receta-info {
   padding: 1rem;
   background: #fffaf3;
   text-align: left;
+  border-top: 1px solid #ffe6bf;
 }
 
 .receta-info h3 {
   color: #f76b1c;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.4rem;
   text-shadow: 0 1px 1px rgba(255, 200, 150, 0.3);
@@ -142,7 +202,7 @@ main {
   font-size: 0.9rem;
   color: #555;
   line-height: 1.4;
-  height: 44px;
+  height: 45px;
   overflow: hidden;
 }
 
@@ -218,7 +278,6 @@ main {
   margin-bottom: 1rem;
 }
 
-/* Campos */
 label {
   font-weight: 500;
   display: block;
@@ -333,18 +392,18 @@ hr {
    📱 RESPONSIVE
 ================================= */
 @media (max-width: 1024px) {
-  .catalogo-contenedor {
+  .tarjetasRecetas {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 700px) {
-  .catalogo-contenedor {
+  .tarjetasRecetas {
     grid-template-columns: 1fr;
   }
 
   .receta-card {
-    max-width: 95%;
+    width: 95%;
   }
 
   .flotante {
