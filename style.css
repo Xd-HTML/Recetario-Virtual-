@@ -326,3 +326,149 @@ hr {
     right: 20px;
   }
 }
+
+/* ===============================
+   📖 DETALLE DE RECETA
+================================= */
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #fffaf4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Botón Volver */
+#btnVolver {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: linear-gradient(90deg, #f76b1c, #fad961);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+#btnVolver:hover {
+  transform: scale(1.1);
+  background: linear-gradient(90deg, #e55d10, #f5c23c);
+}
+
+/* Contenedor principal */
+#detalleReceta {
+  background: white;
+  max-width: 850px;
+  margin: 90px auto 40px;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 25px 35px;
+  line-height: 1.6;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Imagen principal */
+.detalle-imagen {
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  height: 320px;
+  margin-bottom: 25px;
+}
+
+/* Título */
+#detalleTitulo {
+  text-align: center;
+  font-size: 2rem;
+  color: #f76b1c;
+  margin-bottom: 8px;
+}
+
+/* Descripción */
+#detalleDescripcion {
+  text-align: center;
+  color: #555;
+  margin-bottom: 25px;
+  font-size: 1rem;
+}
+
+/* Subtítulos */
+h3 {
+  color: #333;
+  background: linear-gradient(90deg, #ffcc70, #ffb347);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  display: inline-block;
+  margin-top: 25px;
+}
+
+/* Ingredientes y procedimiento */
+ul, ol {
+  margin-top: 10px;
+  padding-left: 25px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+ul li, ol li {
+  margin-bottom: 6px;
+}
+
+/* Imagen secundaria */
+.detalle-secundaria {
+  display: block;
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  height: 250px;
+  margin: 25px 0;
+}
+
+/* Ensalada y Bebida */
+#detalleEnsalada,
+#detalleBebida {
+  background: #fff9ec;
+  border-left: 4px solid #f76b1c;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  #detalleReceta {
+    margin: 80px 15px;
+    padding: 20px;
+  }
+
+  #detalleTitulo {
+    font-size: 1.6rem;
+  }
+
+  .detalle-imagen {
+    height: 220px;
+  }
+
+  .detalle-secundaria {
+    height: 180px;
+  }
+}
