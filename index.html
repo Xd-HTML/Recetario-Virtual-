@@ -34,51 +34,12 @@
     <section id="listaRecetas" class="tarjetasRecetas">
       <!-- Tarjetas generadas dinámicamente -->
     </section>
-
-    <!-- Vista detallada de una receta -->
-    <section id="detalleReceta" class="oculto">
-      <button id="btnVolver" class="volver">⬅ Volver</button>
-
-      <div class="detalle-contenido">
-        <img id="detalleImagen" class="detalle-imagen" alt="Imagen de receta" />
-        <div class="detalle-info">
-          <h2 id="detalleTitulo"></h2>
-          <p id="detalleDescripcion"></p>
-        </div>
-      </div>
-
-      <!-- Tabs -->
-      <div class="tabs">
-        <button class="tab activa" data-tab="principal">Receta principal</button>
-        <button class="tab" data-tab="ensalada">Ensalada</button>
-        <button class="tab" data-tab="bebida">Bebida</button>
-      </div>
-
-      <!-- Contenido de pestañas -->
-      <div class="tab-contenido activa" id="tab-principal">
-        <h3>Ingredientes</h3>
-        <ul id="detalleIngredientes"></ul>
-        <img id="detalleImgSecundaria" class="detalle-secundaria" alt="Imagen adicional de la receta" />
-        <h3>Procedimiento</h3>
-        <p id="detalleProcedimiento"></p>
-      </div>
-
-      <div class="tab-contenido" id="tab-ensalada">
-        <h3>Receta de Ensalada</h3>
-        <p id="detalleEnsalada"></p>
-      </div>
-
-      <div class="tab-contenido" id="tab-bebida">
-        <h3>Receta de Bebida</h3>
-        <p id="detalleBebida"></p>
-      </div>
-    </section>
   </main>
 
-  <!-- Botón flotante -->
+  <!-- Botón flotante para agregar -->
   <button id="btnAgregar" class="flotante" title="Agregar nueva receta">+</button>
 
-  <!-- Formulario modal -->
+  <!-- Modal de formulario -->
   <div id="formReceta" class="modal oculto">
     <div class="formulario">
       <h2>Agregar nueva receta</h2>
@@ -102,23 +63,34 @@
       <label for="descripcionBreve">Descripción breve:</label>
       <textarea id="descripcionBreve" placeholder="Descripción corta..."></textarea>
 
-      <hr />
+      <!-- Tabs de secciones -->
+      <div class="tabs">
+        <button class="seccion active">Sección 1: Receta Principal</button>
+        <button class="seccion">Sección 2: Ensalada (opcional)</button>
+        <button class="seccion">Sección 3: Bebida (opcional)</button>
+      </div>
 
-      <h3>Sección 1: Receta Principal</h3>
-      <label for="ingredientes1">Ingredientes:</label>
-      <textarea id="ingredientes1" placeholder="Separar por comas..."></textarea>
+      <!-- Contenido de secciones -->
+      <div class="contenido-seccion">
+        <label for="ingredientes1">Ingredientes:</label>
+        <textarea id="ingredientes1" placeholder="Separar por comas..."></textarea>
 
-      <label for="imagenSecundaria">Imagen secundaria:</label>
-      <input type="file" id="imagenSecundaria" accept="image/*" />
+        <label for="imagenSecundaria">Imagen secundaria:</label>
+        <input type="file" id="imagenSecundaria" accept="image/*" />
 
-      <label for="procedimiento1">Procedimiento:</label>
-      <textarea id="procedimiento1" placeholder="Paso a paso, separar por líneas..."></textarea>
+        <label for="procedimiento1">Procedimiento:</label>
+        <textarea id="procedimiento1" placeholder="Paso a paso, separar por líneas..."></textarea>
+      </div>
 
-      <h3>Sección 2: Ensalada (opcional)</h3>
-      <textarea id="ensalada" placeholder="Receta o detalles de la ensalada..."></textarea>
+      <div class="contenido-seccion oculto">
+        <label for="ensalada">Receta de ensalada:</label>
+        <textarea id="ensalada" placeholder="Ingredientes y pasos de la ensalada..."></textarea>
+      </div>
 
-      <h3>Sección 3: Bebida (opcional)</h3>
-      <textarea id="bebida" placeholder="Receta o detalles de la bebida..."></textarea>
+      <div class="contenido-seccion oculto">
+        <label for="bebida">Receta de bebida:</label>
+        <textarea id="bebida" placeholder="Ingredientes y pasos de la bebida..."></textarea>
+      </div>
 
       <div class="acciones">
         <button id="guardarReceta">Guardar</button>
