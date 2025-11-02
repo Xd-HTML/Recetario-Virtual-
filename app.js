@@ -16,11 +16,13 @@ class Receta {
 
   mostrarHTML(index) {
     return `
-      <div class="receta" data-index="${index}">
-        ${this.portada ? `<img src="${this.portada}" alt="Portada de ${this.titulo}">` : ""}
-        <div class="info">
-          <h4>${this.titulo}</h4>
-          <p>${this.descripcion}</p>
+      <div class="receta-card" data-index="${index}">
+        <div class="receta-img">
+          ${this.portada ? `<img src="${this.portada}" alt="${this.titulo}">` : `<div class="sin-imagen">📷</div>`}
+        </div>
+        <div class="receta-info">
+          <h3>${this.titulo}</h3>
+          <p>${this.descripcion || "Sin descripción"}</p>
         </div>
       </div>
     `;
@@ -49,17 +51,17 @@ class Recetario {
     lista.classList.remove("oculto");
 
     let recetasFiltradas = this.recetas;
-
     if (filtro && filtro !== "todas") {
       recetasFiltradas = recetasFiltradas.filter(r => r.categoria === filtro);
     }
 
     lista.innerHTML = recetasFiltradas.map((r, i) => r.mostrarHTML(i)).join("") || `
-      <p style="text-align:center; color:#777;">No hay recetas disponibles en esta categoría.</p>
+      <div class="vacio">
+        <p>🍳 No hay recetas en esta categoría.</p>
+      </div>
     `;
 
-    // Evento al hacer clic en una receta
-    document.querySelectorAll(".receta").forEach(card => {
+    document.querySelectorAll(".receta-card").forEach(card => {
       card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
         localStorage.setItem("recetaDetalle", JSON.stringify(this.recetas[index]));
@@ -74,10 +76,12 @@ class Recetario {
     const resultados = this.recetas.filter(r => r.titulo.toLowerCase().includes(termino));
 
     lista.innerHTML = resultados.map((r, i) => r.mostrarHTML(i)).join("") || `
-      <p style="text-align:center; color:#777;">No se encontraron recetas con ese título.</p>
+      <div class="vacio">
+        <p>🔍 No se encontraron recetas con ese título.</p>
+      </div>
     `;
 
-    document.querySelectorAll(".receta").forEach(card => {
+    document.querySelectorAll(".receta-card").forEach(card => {
       card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
         localStorage.setItem("recetaDetalle", JSON.stringify(this.recetas[index]));
@@ -91,8 +95,11 @@ class Recetario {
 // 📙 Inicialización
 // ============================
 const app = new Recetario();
+app.mostrarTodas();
 
-// Nombre aleatorio para la cabecera
+// ============================
+// 🎨 Nombre aleatorio en cabecera
+// ============================
 const nombres = ["Cocina Mágica", "Mi Sazón", "Sabores Caseros", "Delicias del Hogar"];
 document.getElementById("nombreWeb").textContent = nombres[Math.floor(Math.random() * nombres.length)];
 
@@ -104,8 +111,14 @@ const formReceta = document.getElementById("formReceta");
 const cerrarForm = document.getElementById("cerrarForm");
 const guardarReceta = document.getElementById("guardarReceta");
 
-btnAgregar.addEventListener("click", () => formReceta.classList.remove("oculto"));
-cerrarForm.addEventListener("click", () => formReceta.classList.add("oculto"));
+btnAgregar.addEventListener("click", () => {
+  formReceta.classList.remove("oculto");
+  formReceta.querySelector(".formulario").scrollTo(0, 0);
+});
+
+cerrarForm.addEventListener("click", () => {
+  formReceta.classList.add("oculto");
+});
 
 // ============================
 // 🧁 Guardar nueva receta
@@ -114,7 +127,7 @@ guardarReceta.addEventListener("click", () => {
   const categoria = document.getElementById("categoriaReceta").value;
   const titulo = document.getElementById("tituloReceta").value.trim();
   const descripcion = document.getElementById("descripcionBreve").value.trim();
-  const ingredientes = document.getElementById("ingredientes1").value.split(",");
+  const ingredientes = document.getElementById("ingredientes1").value.split(",").map(i => i.trim()).filter(i => i);
   const procedimiento = document.getElementById("procedimiento1").value.trim();
   const ensalada = document.getElementById("ensalada").value.trim();
   const bebida = document.getElementById("bebida").value.trim();
@@ -126,7 +139,7 @@ guardarReceta.addEventListener("click", () => {
   const imgSec = imgSecFile ? URL.createObjectURL(imgSecFile) : null;
 
   if (!titulo) {
-    alert("Por favor, agrega un título a la receta.");
+    alert("⚠️ Por favor, agrega un título a la receta.");
     return;
   }
 
@@ -134,6 +147,7 @@ guardarReceta.addEventListener("click", () => {
   app.agregarReceta(nueva);
   app.mostrarTodas();
 
+  // Reiniciar formulario
   formReceta.classList.add("oculto");
   formReceta.querySelectorAll("input[type='text'], textarea").forEach(el => el.value = "");
   document.getElementById("imagenPortada").value = "";
@@ -154,16 +168,13 @@ document.getElementById("buscarReceta").addEventListener("input", e => {
 });
 
 // ============================
-// 🍽️ Filtrado por categorías
+// 🍽️ Filtro por categoría
 // ============================
 document.querySelectorAll(".menu li").forEach(item => {
   item.addEventListener("click", () => {
+    document.querySelectorAll(".menu li").forEach(li => li.classList.remove("activo"));
+    item.classList.add("activo");
     const categoria = item.getAttribute("data-categoria");
     app.mostrarTodas(categoria);
   });
 });
-
-// ============================
-// 🚀 Mostrar recetas al iniciar
-// ============================
-app.mostrarTodas();
