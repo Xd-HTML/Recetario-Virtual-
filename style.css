@@ -7,6 +7,10 @@ body {
   transition: 0.3s;
 }
 
+h1, h2, h3, h4 {
+  margin: 0;
+}
+
 /* === ENCABEZADO Y MENÚ === */
 .top-bar {
   background: linear-gradient(90deg, #ffcc70, #ffb347);
@@ -30,7 +34,7 @@ body {
   margin: 8px;
 }
 
-.menu ul {
+.menu-lista {
   display: flex;
   list-style: none;
   gap: 15px;
@@ -38,7 +42,7 @@ body {
   padding: 0;
 }
 
-.menu li {
+.menu-lista li {
   cursor: pointer;
   padding: 6px 12px;
   border-radius: 10px;
@@ -47,7 +51,7 @@ body {
   transition: all 0.3s;
 }
 
-.menu li:hover {
+.menu-lista li:hover {
   background: #ffb347;
   color: white;
 }
@@ -71,7 +75,7 @@ body {
   box-shadow: 0 0 5px rgba(255,179,71,0.3);
 }
 
-#btnPerfil {
+.perfil-btn {
   border: none;
   background: #ffcc70;
   border-radius: 50%;
@@ -81,11 +85,11 @@ body {
   transition: 0.3s;
 }
 
-#btnPerfil:hover {
+.perfil-btn:hover {
   background: #ffb347;
 }
 
-/* === LISTA DE RECETAS === */
+/* === TARJETAS DE RECETAS === */
 #listaRecetas {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -126,6 +130,96 @@ body {
   color: #666;
 }
 
+/* === DETALLE DE RECETA === */
+#detalleReceta {
+  padding: 20px;
+}
+
+.volver {
+  background: none;
+  border: none;
+  color: #ff9933;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
+
+.volver:hover {
+  text-decoration: underline;
+}
+
+.detalle-contenido {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.detalle-imagen {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.detalle-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.detalle-secundaria {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+/* === TABS DE SECCIONES === */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 8px 16px;
+  background: #fff3e0;
+  border: 1px solid #ffcc70;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #333;
+  transition: 0.3s;
+}
+
+.tab:hover {
+  background: #ffb347;
+  color: white;
+}
+
+.tab.activa {
+  background: linear-gradient(90deg, #ffcc70, #ffb347);
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tab-contenido {
+  display: none;
+  margin-top: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-contenido.activa {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* === BOTÓN FLOTANTE === */
 .flotante {
   position: fixed;
@@ -147,7 +241,7 @@ body {
   transform: scale(1.1) rotate(10deg);
 }
 
-/* === FORMULARIO MODAL (MEJORADO) === */
+/* === FORMULARIO MODAL === */
 .modal {
   position: fixed;
   top: 0; left: 0;
