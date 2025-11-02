@@ -13,7 +13,7 @@
     </div>
 
     <nav class="menu">
-      <ul>
+      <ul class="menu-lista">
         <li data-categoria="comida">Comida</li>
         <li data-categoria="reposteria">Repostería</li>
         <li data-categoria="panaderia">Panadería</li>
@@ -24,18 +24,18 @@
 
       <div class="busqueda">
         <input type="text" id="buscarReceta" placeholder="Buscar receta por título..." />
-        <button id="btnPerfil" title="Ver perfil">👤</button>
+        <button id="btnPerfil" title="Ver perfil" class="perfil-btn">👤</button>
       </div>
     </nav>
   </header>
 
   <main>
-    <!-- Vista de lista (tarjetas de recetas) -->
+    <!-- Vista general de recetas -->
     <section id="listaRecetas" class="tarjetasRecetas">
-      <!-- Aquí se mostrarán dinámicamente las tarjetas -->
+      <!-- Tarjetas generadas dinámicamente -->
     </section>
 
-    <!-- Vista de receta detallada -->
+    <!-- Vista detallada de una receta -->
     <section id="detalleReceta" class="oculto">
       <button id="btnVolver" class="volver">⬅ Volver</button>
 
@@ -47,14 +47,14 @@
         </div>
       </div>
 
-      <!-- Tabs para secciones -->
+      <!-- Tabs -->
       <div class="tabs">
         <button class="tab activa" data-tab="principal">Receta principal</button>
         <button class="tab" data-tab="ensalada">Ensalada</button>
         <button class="tab" data-tab="bebida">Bebida</button>
       </div>
 
-      <!-- Contenido de las pestañas -->
+      <!-- Contenido de pestañas -->
       <div class="tab-contenido activa" id="tab-principal">
         <h3>Ingredientes</h3>
         <ul id="detalleIngredientes"></ul>
@@ -75,10 +75,10 @@
     </section>
   </main>
 
-  <!-- Botón flotante para agregar nueva receta -->
+  <!-- Botón flotante -->
   <button id="btnAgregar" class="flotante" title="Agregar nueva receta">+</button>
 
-  <!-- Formulario emergente para agregar receta -->
+  <!-- Formulario modal -->
   <div id="formReceta" class="modal oculto">
     <div class="formulario">
       <h2>Agregar nueva receta</h2>
