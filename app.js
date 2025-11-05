@@ -70,7 +70,8 @@ class Recetario {
       card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
         localStorage.setItem("recetaSeleccionada", JSON.stringify(this.recetas[index]));
-        alert(`📋 Receta seleccionada: ${this.recetas[index].titulo}`);
+        // Redirigir al detalle.html
+        window.location.href = "detalle.html";
       });
     });
   }
@@ -122,7 +123,7 @@ guardarReceta?.addEventListener("click", () => {
   const titulo = document.getElementById("tituloReceta").value.trim();
   const descripcion = document.getElementById("descripcionBreve").value.trim();
   const ingredientes = document.getElementById("ingredientes1").value.split(",");
-  const procedimiento = document.getElementById("procedimiento1").value.trim();
+  const procedimiento = document.getElementById("procedimiento1").value.trim().split("\n");
   const ensalada = document.getElementById("ensalada").value.trim();
   const bebida = document.getElementById("bebida").value.trim();
 
