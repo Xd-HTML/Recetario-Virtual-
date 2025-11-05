@@ -17,15 +17,15 @@ class Receta {
   // 💡 Genera la tarjeta visual del catálogo
   mostrarHTML(index) {
     return `
-      <div class="receta-card" data-index="${index}">
-        <div class="receta-img">
+      <div class="tarjeta" data-index="${index}">
+        <div class="imagen">
           ${
             this.portada
               ? `<img src="${this.portada}" alt="Imagen de ${this.titulo}">`
               : `<div class="sin-imagen">🍽️</div>`
           }
         </div>
-        <div class="receta-info">
+        <div class="contenido">
           <h3>${this.titulo}</h3>
           <p>${this.descripcion || "Sin descripción breve."}</p>
         </div>
@@ -62,19 +62,15 @@ class Recetario {
       return;
     }
 
-    // Mostrar recetas dentro de un contenedor tipo catálogo
-    lista.innerHTML = `
-      <div class="catalogo-contenedor">
-        ${this.recetas.map((r, i) => r.mostrarHTML(i)).join("")}
-      </div>
-    `;
+    // Generar las tarjetas directamente dentro del contenedor de cuadrícula
+    lista.innerHTML = this.recetas.map((r, i) => r.mostrarHTML(i)).join("");
 
-    // Agregar evento para ver detalle o expandir
-    document.querySelectorAll(".receta-card").forEach(card => {
+    // Evento al hacer clic en una receta
+    document.querySelectorAll(".tarjeta").forEach(card => {
       card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
         localStorage.setItem("recetaSeleccionada", JSON.stringify(this.recetas[index]));
-        alert(`📋 Receta: ${this.recetas[index].titulo}`);
+        alert(`📋 Receta seleccionada: ${this.recetas[index].titulo}`);
       });
     });
   }
