@@ -444,3 +444,13 @@ hr {
 .tarjetasRecetas .tarjeta .contenido {
   padding: 1rem;
 }
+
+
+
+/* --- Diseño de cuadrícula de tarjetas --- */
+.tarjetasRecetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Se adapta entre 4 o 5 según el ancho */
+  gap: 20px;
+  padding: 20px;
+}
