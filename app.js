@@ -62,7 +62,6 @@ class Recetario {
       return;
     }
 
-    // Generar las tarjetas directamente dentro del contenedor de cuadrícula
     lista.innerHTML = this.recetas.map((r, i) => r.mostrarHTML(i)).join("");
 
     // Evento al hacer clic en una receta
@@ -70,7 +69,6 @@ class Recetario {
       card.addEventListener("click", () => {
         const index = card.getAttribute("data-index");
         localStorage.setItem("recetaSeleccionada", JSON.stringify(this.recetas[index]));
-        // Redirigir al detalle.html
         window.location.href = "detalle.html";
       });
     });
@@ -117,25 +115,42 @@ secciones.forEach((btn, i) => {
   });
 });
 
-// Guardar receta
-guardarReceta?.addEventListener("click", () => {
+// ===============================
+// 📦 Función auxiliar para convertir imagen a Base64
+// ===============================
+function convertirABase64(archivo) {
+  return new Promise((resolve, reject) => {
+    if (!archivo) return resolve(null);
+    const lector = new FileReader();
+    lector.onload = () => resolve(lector.result);
+    lector.onerror = () => reject("Error al leer el archivo");
+    lector.readAsDataURL(archivo);
+  });
+}
+
+// ===============================
+// 💾 Guardar receta
+// ===============================
+guardarReceta?.addEventListener("click", async () => {
   const categoria = document.getElementById("categoriaReceta").value;
   const titulo = document.getElementById("tituloReceta").value.trim();
   const descripcion = document.getElementById("descripcionBreve").value.trim();
-  const ingredientes = document.getElementById("ingredientes1").value.split(",");
+  const ingredientes = document.getElementById("ingredientes1").value.trim().split(",");
   const procedimiento = document.getElementById("procedimiento1").value.trim().split("\n");
   const ensalada = document.getElementById("ensalada").value.trim();
   const bebida = document.getElementById("bebida").value.trim();
 
   const portadaFile = document.getElementById("imagenPortada").files[0];
   const imgSecFile = document.getElementById("imagenSecundaria").files[0];
-  const portada = portadaFile ? URL.createObjectURL(portadaFile) : null;
-  const imgSec = imgSecFile ? URL.createObjectURL(imgSecFile) : null;
 
   if (!titulo) {
     alert("Por favor, ingresa un título para la receta.");
     return;
   }
+
+  // Convertir imágenes a base64 para que se guarden en localStorage
+  const portada = await convertirABase64(portadaFile);
+  const imgSec = await convertirABase64(imgSecFile);
 
   const nueva = new Receta(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida);
   app.agregarReceta(nueva);
@@ -147,6 +162,7 @@ guardarReceta?.addEventListener("click", () => {
   document.getElementById("imagenPortada").value = "";
   document.getElementById("imagenSecundaria").value = "";
   document.getElementById("categoriaReceta").selectedIndex = 0;
+  alert("✅ Receta guardada correctamente.");
 });
 
 // ===============================
