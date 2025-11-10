@@ -2,14 +2,14 @@
 // 🌮 Clase Receta
 // ===============================
 class Receta {
-  constructor(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida) {
+  constructor(categoria = "", portada = null, titulo = "", descripcion = "", ingredientes = [], imgSec = null, procedimiento = [], ensalada = "", bebida = "") {
     this.categoria = categoria;
     this.portada = portada;
     this.titulo = titulo;
     this.descripcion = descripcion;
-    this.ingredientes = ingredientes;
+    this.ingredientes = Array.isArray(ingredientes) ? ingredientes : (ingredientes ? String(ingredientes).split(",") : []);
     this.imgSec = imgSec;
-    this.procedimiento = procedimiento;
+    this.procedimiento = Array.isArray(procedimiento) ? procedimiento : (procedimiento ? String(procedimiento).split("\n") : []);
     this.ensalada = ensalada;
     this.bebida = bebida;
   }
@@ -39,7 +39,19 @@ class Receta {
 // ===============================
 class Recetario {
   constructor() {
-    this.recetas = JSON.parse(localStorage.getItem("recetasGuardadas")) || [];
+    const raw = JSON.parse(localStorage.getItem("recetasGuardadas")) || [];
+    // Reconstruir instancias de Receta para recuperar métodos
+    this.recetas = raw.map(r => new Receta(
+      r?.categoria,
+      r?.portada,
+      r?.titulo,
+      r?.descripcion,
+      r?.ingredientes,
+      r?.imgSec,
+      r?.procedimiento,
+      r?.ensalada,
+      r?.bebida
+    ));
   }
 
   agregarReceta(receta) {
@@ -64,12 +76,14 @@ class Recetario {
 
     lista.innerHTML = this.recetas.map((r, i) => r.mostrarHTML(i)).join("");
 
-    // Evento al hacer clic en una receta
+    // Evento al hacer clic en una receta (convertir index a número)
     document.querySelectorAll(".tarjeta").forEach(card => {
       card.addEventListener("click", () => {
-        const index = card.getAttribute("data-index");
-        localStorage.setItem("recetaSeleccionada", JSON.stringify(this.recetas[index]));
-        window.location.href = "detalle.html";
+        const index = Number(card.getAttribute("data-index"));
+        if (Number.isFinite(index) && this.recetas[index]) {
+          localStorage.setItem("recetaSeleccionada", JSON.stringify(this.recetas[index]));
+          window.location.href = "detalle.html";
+        }
       });
     });
   }
@@ -96,7 +110,8 @@ const guardarReceta = document.getElementById("guardarReceta");
 // Mostrar formulario
 btnAgregar?.addEventListener("click", () => {
   formReceta.classList.remove("oculto");
-  document.querySelectorAll(".seccion")[0].click();
+  const primeraSeccion = document.querySelectorAll(".seccion")[0];
+  if (primeraSeccion) primeraSeccion.click();
 });
 
 // Cerrar formulario
@@ -111,7 +126,7 @@ secciones.forEach((btn, i) => {
     secciones.forEach(s => s.classList.remove("active"));
     contenidoSecciones.forEach(c => c.classList.add("oculto"));
     btn.classList.add("active");
-    contenidoSecciones[i].classList.remove("oculto");
+    if (contenidoSecciones[i]) contenidoSecciones[i].classList.remove("oculto");
   });
 });
 
@@ -132,16 +147,20 @@ function convertirABase64(archivo) {
 // 💾 Guardar receta
 // ===============================
 guardarReceta?.addEventListener("click", async () => {
-  const categoria = document.getElementById("categoriaReceta").value;
-  const titulo = document.getElementById("tituloReceta").value.trim();
-  const descripcion = document.getElementById("descripcionBreve").value.trim();
-  const ingredientes = document.getElementById("ingredientes1").value.trim().split(",");
-  const procedimiento = document.getElementById("procedimiento1").value.trim().split("\n");
-  const ensalada = document.getElementById("ensalada").value.trim();
-  const bebida = document.getElementById("bebida").value.trim();
+  const categoriaEl = document.getElementById("categoriaReceta");
+  const categoria = categoriaEl ? categoriaEl.value : "";
+  const tituloEl = document.getElementById("tituloReceta");
+  const titulo = tituloEl ? tituloEl.value.trim() : "";
+  const descripcion = (document.getElementById("descripcionBreve") || { value: "" }).value.trim();
+  const ingredientesRaw = (document.getElementById("ingredientes1") || { value: "" }).value.trim();
+  const ingredientes = ingredientesRaw ? ingredientesRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
+  const procedimientoRaw = (document.getElementById("procedimiento1") || { value: "" }).value.trim();
+  const procedimiento = procedimientoRaw ? procedimientoRaw.split("\n").map(s => s.trim()).filter(Boolean) : [];
+  const ensalada = (document.getElementById("ensalada") || { value: "" }).value.trim();
+  const bebida = (document.getElementById("bebida") || { value: "" }).value.trim();
 
-  const portadaFile = document.getElementById("imagenPortada").files[0];
-  const imgSecFile = document.getElementById("imagenSecundaria").files[0];
+  const portadaFile = (document.getElementById("imagenPortada") || { files: [] }).files[0];
+  const imgSecFile = (document.getElementById("imagenSecundaria") || { files: [] }).files[0];
 
   if (!titulo) {
     alert("Por favor, ingresa un título para la receta.");
@@ -149,8 +168,13 @@ guardarReceta?.addEventListener("click", async () => {
   }
 
   // Convertir imágenes a base64 para que se guarden en localStorage
-  const portada = await convertirABase64(portadaFile);
-  const imgSec = await convertirABase64(imgSecFile);
+  let portada = null, imgSec = null;
+  try {
+    portada = await convertirABase64(portadaFile);
+    imgSec = await convertirABase64(imgSecFile);
+  } catch (err) {
+    console.warn("Error leyendo imágenes:", err);
+  }
 
   const nueva = new Receta(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida);
   app.agregarReceta(nueva);
@@ -159,9 +183,9 @@ guardarReceta?.addEventListener("click", async () => {
   // Limpiar formulario
   formReceta.classList.add("oculto");
   formReceta.querySelectorAll("input[type='text'], textarea").forEach(el => el.value = "");
-  document.getElementById("imagenPortada").value = "";
-  document.getElementById("imagenSecundaria").value = "";
-  document.getElementById("categoriaReceta").selectedIndex = 0;
+  if (document.getElementById("imagenPortada")) document.getElementById("imagenPortada").value = "";
+  if (document.getElementById("imagenSecundaria")) document.getElementById("imagenSecundaria").value = "";
+  if (document.getElementById("categoriaReceta")) document.getElementById("categoriaReceta").selectedIndex = 0;
   alert("✅ Receta guardada correctamente.");
 });
 
