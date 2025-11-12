@@ -195,3 +195,17 @@ guardarReceta?.addEventListener("click", async () => {
 document.addEventListener("DOMContentLoaded", () => {
   app.mostrarTodas();
 });
+
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+const auth = getAuth();
+
+// 🔍 Verifica si hay usuario logueado
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    // Si no está logueado, redirige al login
+    alert("Debes iniciar sesión para crear recetas");
+    window.location.href = "login.html";
+  }
+});
+
