@@ -209,3 +209,54 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
+import { auth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from './firebaseConfig.js';
+
+const loginModal = document.getElementById('loginModal');
+const btnPerfil = document.getElementById('btnPerfil');
+const btnLogin = document.getElementById('btnLogin');
+const btnCerrarLogin = document.getElementById('btnCerrarLogin');
+const btnAgregar = document.getElementById('btnAgregar');
+
+let usuarioActual = null;
+
+// Mostrar el modal de login
+btnPerfil.addEventListener('click', () => {
+  if (usuarioActual) {
+    if (confirm("¿Deseas cerrar sesión?")) {
+      signOut(auth);
+    }
+  } else {
+    loginModal.classList.remove('oculto');
+  }
+});
+
+// Cerrar modal
+btnCerrarLogin.addEventListener('click', () => {
+  loginModal.classList.add('oculto');
+});
+
+// Iniciar sesión
+btnLogin.addEventListener('click', async () => {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    loginModal.classList.add('oculto');
+    alert("Inicio de sesión exitoso.");
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+});
+
+// Verificar sesión
+onAuthStateChanged(auth, (user) => {
+  usuarioActual = user;
+  if (user) {
+    btnPerfil.textContent = "👤 Cerrar Sesión";
+    btnAgregar.style.display = "block";
+  } else {
+    btnPerfil.textContent = "👤 Iniciar Sesión";
+    btnAgregar.style.display = "none";
+  }
+});
+
