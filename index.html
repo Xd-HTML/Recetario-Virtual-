@@ -15,10 +15,10 @@
     <nav class="menu">
       <ul class="menu-lista">
 
-        <!-- 🔵 NUEVA CATEGORÍA → MOSTRAR TODAS -->
+        <!-- 🔵 CATEGORÍA GENERAL -->
         <li data-categoria="todas" class="activo">Todos</li>
 
-        <!-- Categorías -->
+        <!-- 🔵 CATEGORÍAS -->
         <li data-categoria="comida">Comida</li>
         <li data-categoria="reposteria">Repostería</li>
         <li data-categoria="panaderia">Panadería</li>
@@ -36,16 +36,14 @@
   </header>
 
   <main>
-    <!-- Vista general de recetas -->
     <section id="listaRecetas" class="tarjetasRecetas">
-      <!-- Tarjetas generadas dinámicamente -->
+      <!-- Tarjetas desde app.js -->
     </section>
   </main>
 
-  <!-- Botón flotante para agregar -->
   <button id="btnAgregar" class="flotante" title="Agregar nueva receta">+</button>
 
-  <!-- Modal de formulario -->
+  <!-- FORMULARIO -->
   <div id="formReceta" class="modal oculto">
     <div class="formulario">
       <h2>Agregar nueva receta</h2>
@@ -69,14 +67,12 @@
       <label for="descripcionBreve">Descripción breve:</label>
       <textarea id="descripcionBreve" placeholder="Descripción corta..."></textarea>
 
-      <!-- Tabs de secciones -->
       <div class="tabs">
         <button type="button" class="seccion active">Sección 1: Receta Principal</button>
         <button type="button" class="seccion">Sección 2: Ensalada (opcional)</button>
         <button type="button" class="seccion">Sección 3: Bebida (opcional)</button>
       </div>
 
-      <!-- Contenido de secciones -->
       <div class="contenido-seccion">
         <label for="ingredientes1">Ingredientes:</label>
         <textarea id="ingredientes1" placeholder="Separar por comas..."></textarea>
