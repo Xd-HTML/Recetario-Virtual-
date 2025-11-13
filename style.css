@@ -9,7 +9,7 @@
 }
 
 body {
-  background-color: #fff3e0; /* 🍑 Fondo color durazno */
+  background-color: #fff3e0;
   color: #333;
   min-height: 100vh;
   display: flex;
@@ -62,6 +62,7 @@ header h1 {
   font-weight: 500;
 }
 
+/* Estado seleccionado */
 .menu li:hover,
 .menu li.activo {
   background: #f76b1c;
@@ -97,7 +98,6 @@ header h1 {
   padding: 0.5rem 0.7rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 .busqueda button:hover {
@@ -112,15 +112,16 @@ main {
   padding: 2rem;
 }
 
-/* Cuadrícula del catálogo */
+/* --- DISEÑO ÚNICO DE TARJETAS --- */
 .tarjetasRecetas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 20px;
   justify-items: center;
 }
 
-/* Animación al aparecer */
+/* Animación */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -140,11 +141,11 @@ main {
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   animation: fadeIn 0.6s ease forwards;
   opacity: 0;
   border: 2px solid #ffe6bf;
-  transform-style: preserve-3d;
 }
 
 .receta-card:hover {
@@ -152,12 +153,11 @@ main {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* Imagen superior */
+/* Imagen */
 .receta-img {
   width: 100%;
-  height: 200px;
+  height: 190px;
   overflow: hidden;
-  position: relative;
   border-bottom: 3px solid #ffd699;
 }
 
@@ -174,12 +174,12 @@ main {
 
 .sin-imagen {
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 200px;
+  align-items: center;
   background: #f0f0f0;
-  color: #888;
-  font-size: 2rem;
+  height: 190px;
+  color: #777;
+  font-size: 1.8rem;
 }
 
 /* Info */
@@ -193,22 +193,17 @@ main {
 .receta-info h3 {
   color: #f76b1c;
   font-size: 1.2rem;
-  font-weight: 700;
   margin-bottom: 0.4rem;
-  text-shadow: 0 1px 1px rgba(255, 200, 150, 0.3);
 }
 
 .receta-info p {
   font-size: 0.9rem;
-  color: #555;
-  line-height: 1.4;
   height: 45px;
   overflow: hidden;
+  color: #555;
 }
 
-/* ===============================
-   🧁 MENSAJE VACÍO
-================================= */
+/* Mensaje vacío */
 .vacio {
   grid-column: 1 / -1;
   text-align: center;
@@ -254,7 +249,6 @@ main {
   align-items: center;
   justify-content: center;
   z-index: 100;
-  transition: opacity 0.3s ease;
 }
 
 .oculto {
@@ -267,190 +261,25 @@ main {
   width: 95%;
   max-width: 550px;
   border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   max-height: 85vh;
-}
-
-.formulario h2 {
-  text-align: center;
-  color: #f76b1c;
-  margin-bottom: 1rem;
-}
-
-label {
-  font-weight: 500;
-  display: block;
-  margin-top: 1rem;
-}
-
-input[type="text"],
-textarea,
-select {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-top: 0.4rem;
-  transition: all 0.3s;
-}
-
-input[type="text"]:focus,
-textarea:focus,
-select:focus {
-  border-color: #f76b1c;
-  outline: none;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 70px;
-}
-
-hr {
-  margin: 1.5rem 0;
-  border: 0;
-  border-top: 1px solid #eee;
-}
-
-/* ===============================
-   🎯 BOTONES DEL FORMULARIO
-================================= */
-.acciones {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.acciones button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: 600;
-}
-
-#guardarReceta {
-  background: #f76b1c;
-  color: white;
-}
-
-#guardarReceta:hover {
-  background: #e55d10;
-}
-
-#cerrarForm {
-  background: #ccc;
-}
-
-#cerrarForm:hover {
-  background: #bbb;
-}
-
-/* ===============================
-   🧭 TABS DEL FORMULARIO
-================================= */
-.tabs {
-  display: flex;
-  justify-content: space-between;
-  margin: 15px 0;
-  border-bottom: 2px solid #f76b1c;
-}
-
-.seccion {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  border: none;
-  background: #fff3e0;
-  transition: background 0.3s;
-  font-weight: bold;
-  border-radius: 10px 10px 0 0;
-}
-
-.seccion:hover {
-  background: #ffd89b;
-}
-
-.seccion.active {
-  background: #f76b1c;
-  color: white;
-}
-
-.contenido-seccion {
-  display: block;
-}
-
-.contenido-seccion.oculto {
-  display: none;
 }
 
 /* ===============================
    📱 RESPONSIVE
 ================================= */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .tarjetasRecetas {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   .tarjetasRecetas {
     grid-template-columns: 1fr;
   }
 
   .receta-card {
-    width: 95%;
+    max-width: 95%;
   }
-
-  .flotante {
-    bottom: 20px;
-    right: 20px;
-  }
-}
-
-/* Diseño de cuadrícula para las tarjetas */
-.tarjetasRecetas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 1.5rem;
-}
-
-/* Tarjetas individuales */
-.tarjetasRecetas .tarjeta {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tarjetasRecetas .tarjeta:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.25);
-}
-
-/* Imagen y contenido */
-.tarjetasRecetas .tarjeta img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-.tarjetasRecetas .tarjeta .contenido {
-  padding: 1rem;
-}
-
-
-
-/* --- Diseño de cuadrícula de tarjetas --- */
-.tarjetasRecetas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Se adapta entre 4 o 5 según el ancho */
-  gap: 20px;
-  padding: 20px;
 }
