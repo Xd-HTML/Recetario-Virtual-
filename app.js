@@ -86,6 +86,32 @@ class Recetario {
       });
     });
   }
+
+  // =====================================
+  // 🔎 BUSCADOR (POR TÍTULO Y DESCRIPCIÓN)
+  // =====================================
+  buscar(texto) {
+    const lista = document.getElementById("listaRecetas");
+    if (!lista) return;
+
+    const palabra = texto.toLowerCase();
+
+    const resultados = this.recetas.filter(r =>
+      r.titulo.toLowerCase().includes(palabra) ||
+      r.descripcion.toLowerCase().includes(palabra)
+    );
+
+    lista.innerHTML = resultados.length
+      ? resultados.map((r, i) => r.mostrarHTML(i)).join("")
+      : `<p class="vacio">❌ No se encontraron coincidencias.</p>`;
+
+    document.querySelectorAll(".tarjeta").forEach((card, i) => {
+      card.addEventListener("click", () => {
+        localStorage.setItem("recetaSeleccionada", JSON.stringify(resultados[i]));
+        window.location.href = "detalle.html";
+      });
+    });
+  }
 }
 
 // ===============================
@@ -179,12 +205,24 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       const categoria = btn.getAttribute("data-categoria");
 
-      // Marcar activo
       document.querySelectorAll(".menu li").forEach(li => li.classList.remove("activo"));
       btn.classList.add("activo");
 
-      // Mostrar recetas
       app.mostrarPorCategoria(categoria);
     });
   });
+
+  // ============================
+  // 🔍 BUSCADOR FUNCIONANDO
+  // ============================
+  const buscador = document.getElementById("buscador");
+
+  if (buscador) {
+    buscador.addEventListener("input", () => {
+      const texto = buscador.value.trim();
+      if (texto === "") app.mostrarPorCategoria("todas");
+      else app.buscar(texto);
+    });
+  }
+
 });
