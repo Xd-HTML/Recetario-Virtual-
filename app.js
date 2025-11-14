@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================
   // 🔍 BUSCADOR FUNCIONANDO
   // ============================
-  const buscador = document.getElementById("buscador");
+  const buscador = document.getElementById("buscarReceta");
 
   if (buscador) {
     buscador.addEventListener("input", () => {
