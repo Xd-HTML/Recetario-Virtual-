@@ -231,4 +231,5 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("btnBorrarHistorial").addEventListener("click", () => {
   localStorage.clear();
   alert("Historial borrado correctamente.");
-}); 
+});
+
