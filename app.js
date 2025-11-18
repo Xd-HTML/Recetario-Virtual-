@@ -2,30 +2,14 @@
 // 🌮 Clase Receta
 // ===============================
 class Receta {
-  constructor(
-    categoria = "",
-    portada = null,
-    titulo = "",
-    descripcion = "",
-    ingredientes = "",
-    imgSec = null,
-    procedimiento = "",
-    ensalada = "",
-    bebida = ""
-  ) {
+  constructor(categoria = "", portada = null, titulo = "", descripcion = "", ingredientes = [], imgSec = null, procedimiento = [], ensalada = "", bebida = "") {
     this.categoria = categoria;
     this.portada = portada;
     this.titulo = titulo;
     this.descripcion = descripcion;
-
-    // 👉 ya NO se separa por comas ni nada
-    this.ingredientes = ingredientes;
-
+    this.ingredientes = Array.isArray(ingredientes) ? ingredientes : (ingredientes ? String(ingredientes).split(",") : []);
     this.imgSec = imgSec;
-
-    // 👉 ya NO se separa por saltos de línea
-    this.procedimiento = procedimiento;
-
+    this.procedimiento = Array.isArray(procedimiento) ? procedimiento : (procedimiento ? String(procedimiento).split("\n") : []);
     this.ensalada = ensalada;
     this.bebida = bebida;
   }
@@ -53,15 +37,14 @@ class Receta {
 class Recetario {
   constructor() {
     const raw = JSON.parse(localStorage.getItem("recetasGuardadas")) || [];
-
     this.recetas = raw.map(r => new Receta(
       r.categoria,
       r.portada,
       r.titulo,
       r.descripcion,
-      r.ingredientes,  // ahora es string
+      r.ingredientes,
       r.imgSec,
-      r.procedimiento, // ahora es string
+      r.procedimiento,
       r.ensalada,
       r.bebida
     ));
@@ -184,11 +167,8 @@ guardarReceta?.addEventListener("click", async () => {
   const categoria = document.getElementById("categoriaReceta").value;
   const titulo = document.getElementById("tituloReceta").value.trim();
   const descripcion = document.getElementById("descripcionBreve").value.trim();
-
-  // ✔ YA NO SE DIVIDEN AUTOMÁTICAMENTE
-  const ingredientes = document.getElementById("ingredientes1").value.trim();
-  const procedimiento = document.getElementById("procedimiento1").value.trim();
-
+  const ingredientes = document.getElementById("ingredientes1").value.trim().split(",").map(a => a.trim());
+  const procedimiento = document.getElementById("procedimiento1").value.trim().split("\n").map(a => a.trim());
   const ensalada = document.getElementById("ensalada")?.value || "";
   const bebida = document.getElementById("bebida")?.value || "";
 
@@ -203,23 +183,14 @@ guardarReceta?.addEventListener("click", async () => {
   const portada = await convertirABase64(portadaFile);
   const imgSec = await convertirABase64(imgSecFile);
 
-  const nueva = new Receta(
-    categoria,
-    portada,
-    titulo,
-    descripcion,
-    ingredientes,
-    imgSec,
-    procedimiento,
-    ensalada,
-    bebida
-  );
+  const nueva = new Receta(categoria, portada, titulo, descripcion, ingredientes, imgSec, procedimiento, ensalada, bebida);
 
   app.agregarReceta(nueva);
 
   formReceta.classList.add("oculto");
   alert("Receta guardada ✔");
 
+  // Mostrar en su categoría
   app.mostrarPorCategoria(categoria);
 });
 
@@ -229,6 +200,7 @@ guardarReceta?.addEventListener("click", async () => {
 document.addEventListener("DOMContentLoaded", () => {
   app.mostrarPorCategoria("todas");
 
+  // Detectar clic en menú por data-categoria
   document.querySelectorAll(".menu li").forEach(btn => {
     btn.addEventListener("click", () => {
       const categoria = btn.getAttribute("data-categoria");
@@ -240,7 +212,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Buscador
+  // ============================
+  // 🔍 BUSCADOR FUNCIONANDO
+  // ============================
   const buscador = document.getElementById("buscarReceta");
 
   if (buscador) {
@@ -253,30 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-// ===============================
-// 🗑️ BORRAR HISTORIAL
-// ===============================
-document.getElementById("btnBorrarHistorial")?.addEventListener("click", () => {
+
+document.getElementById("btnBorrarHistorial").addEventListener("click", () => {
   localStorage.clear();
   alert("Historial borrado correctamente.");
-});
-
-
-
-
-
-function guardarRecetaFirebase(receta) {
-
-  const key = db.ref().child("recetas").push().key;
-
-  db.ref("recetas/" + key)
-    .set(receta)
-    .then(() => {
-      alert("Receta guardada en Firebase");
-    })
-    .catch((err) => {
-      console.error("Error al guardar:", err);
-    });
-}
-
-
+}); 
