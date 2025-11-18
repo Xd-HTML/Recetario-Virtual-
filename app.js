@@ -260,3 +260,26 @@ document.getElementById("btnBorrarHistorial")?.addEventListener("click", () => {
   localStorage.clear();
   alert("Historial borrado correctamente.");
 });
+
+
+
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js"></script>
+
+<script>
+  // Configuración REAL de tu proyecto
+  const firebaseConfig = {
+  apiKey: "AIzaSyB2cU8nXlkxEBLKSX5cBvLKybGE8HHpw1c",
+  authDomain: "recetario-virtual.firebaseapp.com",
+  databaseURL: "https://recetario-virtual-default-rtdb.firebaseio.com",
+  projectId: "recetario-virtual",
+  storageBucket: "recetario-virtual.firebasestorage.app",
+  messagingSenderId: "1062247715844",
+  appId: "1:1062247715844:web:180a220283b74c481f5151"
+};
+
+  // Inicializar Firebase
+  const appFirebase = firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+</script>
+
