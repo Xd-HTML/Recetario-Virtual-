@@ -261,3 +261,22 @@ document.getElementById("btnBorrarHistorial")?.addEventListener("click", () => {
   alert("Historial borrado correctamente.");
 });
 
+
+
+
+
+function guardarRecetaFirebase(receta) {
+
+  const key = db.ref().child("recetas").push().key;
+
+  db.ref("recetas/" + key)
+    .set(receta)
+    .then(() => {
+      alert("Receta guardada en Firebase");
+    })
+    .catch((err) => {
+      console.error("Error al guardar:", err);
+    });
+}
+
+
