@@ -26,7 +26,7 @@
 
   <h3>Ingredientes</h3>
 
-  <p id="detalleIngredientes" class="lista-ingredientes">
+  <ul id="detalleIngredientes" class="lista-ingredientes">
 
     <li>Ejemplo: 1 taza de harina</li>
 
@@ -34,7 +34,7 @@
 
     <li>Ejemplo: 1/2 taza de leche</li>
 
-  </p>
+  </ul>
 
 </section>
 
@@ -137,37 +137,5 @@
       }
   
     });
-
-
-
-
-    function cargarReceta(id) {
-  db.ref("recetas/" + id).once("value")
-    .then(snapshot => {
-      const r = snapshot.val();
-
-      document.getElementById("detalleTitulo").textContent = r.titulo;
-      document.getElementById("detalleDescripcion").textContent = r.descripcion;
-      document.getElementById("detalleIngredientes").innerHTML =
-        r.ingredientes.replace(/\n/g, "<br>");
-
-      document.getElementById("detalleProcedimiento").innerHTML =
-        r.procedimiento.replace(/\n/g, "<br>");
-
-      document.getElementById("detalleEnsalada").innerHTML =
-        `<strong>Ensalada:</strong><p>${r.ensalada}</p>`;
-
-      document.getElementById("detalleBebida").innerHTML =
-        `<strong>Bebida:</strong><p>${r.bebida}</p>`;
-
-      document.getElementById("detalleImagen").src = r.imagen;
-      document.getElementById("detalleImagen2").src = r.imagen2;
-    });
-}
-
-
-
-
-    
   
   </script></body></html> 
